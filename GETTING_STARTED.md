@@ -26,7 +26,7 @@
 ```python
 from population_generator import PopulationGenerator
 from population_generator.llm import OpenAIModel  # You'll implement this
-from population_generator.classifiers import UKHouseholdCompositionClassifier
+from population_generator.contrib.classifiers.uk import UKHouseholdCompositionClassifier
 
 # Initialize generator
 generator = PopulationGenerator(
@@ -83,14 +83,14 @@ class YourLLM(BaseLLM):
 Create region-specific classifiers:
 
 ```python
-from population_generator.classifiers.household_type.base import HouseholdCompositionClassifier
+from population_generator.classifiers.base import HouseholdLevelClassifier
 
-class YourRegionClassifier(HouseholdCompositionClassifier):
+class YourRegionClassifier(HouseholdLevelClassifier):
     def get_name(self):
         return "your_region"
     
-    def classify_household_structure(self, group, relationship_col="relationship"):
-        # Your classification logic
+    def classify_household(self, household_df, relationship_col="relationship", **kwargs):
+        # Your classification logic - analyze household_df to determine type
         return "household_type"
 ```
 

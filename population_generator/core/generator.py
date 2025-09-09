@@ -33,6 +33,11 @@ class PopulationGenerator:
             
         self.prompt_manager = PromptManager(self.config)
     
+    @property
+    def data_loader(self):
+        """Access to data loading functionality through prompt manager."""
+        return self.prompt_manager
+    
     def generate_households(
         self,
         n_households: int,
@@ -106,10 +111,9 @@ class PopulationGenerator:
                 )
 
                 # Update prompt with current statistics vs targets
-                prompt = self.prompt_manager.statistics_manager.replace_placeholders_in_prompt(
+                prompt = self.prompt_manager.prepare_prompt_with_feedback(
                     base_prompt.replace("{LOCATION}", location),
                     synthetic_df=synthetic_df,
-                    format_type="comparison",
                     relationship_col="relationship"  # For household composition classifiers
                 )
 

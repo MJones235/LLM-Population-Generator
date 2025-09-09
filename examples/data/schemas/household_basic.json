@@ -10,9 +10,9 @@
                 "properties": {
                     "age": {"type": "integer", "minimum": 0, "maximum": 120},
                     "gender": {"type": "string", "enum": ["Male", "Female"]},
-                    "relationship_to_head": {"type": "string", "enum": ["Head", "Spouse", "Child", "Child-in-law", "Parent", "Parent-in-law", "Sibling", "Sibling-in-law", "Grandchild", "Grandparent", "Aunt", "Uncle", "Nephew", "Niece", "Cousin", "Partner", "Housemate", "Lodger"]}
+                    "relationship": {"type": "string", "enum": ["Head", "Spouse", "Child", "Child-in-law", "Parent", "Parent-in-law", "Sibling", "Sibling-in-law", "Grandchild", "Grandparent", "Aunt", "Uncle", "Nephew", "Niece", "Cousin", "Partner", "Housemate", "Lodger"]}
                 },
-                "required": ["age", "gender", "relationship_to_head"],
+                "required": ["age", "gender", "relationship"],
                 "additionalProperties": false
             }
         }

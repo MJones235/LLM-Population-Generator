@@ -296,3 +296,7 @@ class StatisticsManager:
                 prompt = prompt.replace(f"{{{placeholder}}}", "")
         
         return prompt
+    
+    def clear_all(self):
+        """Clear all registered statistic providers."""
+        self.providers.clear()

@@ -5,10 +5,10 @@ custom classifiers. For reference implementations, see:
 population_generator.contrib.classifiers
 """
 
-from .household_size import HouseholdSizeClassifier
-from .household_type import HouseholdCompositionClassifier
+from .base import DemographicClassifier, HouseholdLevelClassifier, IndividualLevelClassifier
 
 __all__ = [
-    "HouseholdSizeClassifier", 
-    "HouseholdCompositionClassifier"
+    "DemographicClassifier",
+    "HouseholdLevelClassifier", 
+    "IndividualLevelClassifier"
 ]
