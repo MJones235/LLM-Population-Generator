@@ -22,7 +22,7 @@ class UKSexClassifier(IndividualLevelClassifier):
         Returns:
             String label for the gender/sex category
         """
-        gender = individual.get('gender', 'Unknown')
+        gender = individual.get('gender', 'Male')
         return self._normalize_gender(gender)
     
     def _normalize_gender(self, gender: str) -> str:
@@ -35,17 +35,15 @@ class UKSexClassifier(IndividualLevelClassifier):
             Normalized gender category
         """
         if pd.isna(gender) or gender == '':
-            return 'Unknown'
+            return 'Male'
         
         gender_lower = str(gender).lower().strip()
         
         # Map common variations to standard categories
         if gender_lower in ['male', 'm', 'man', 'boy']:
             return 'Male'
-        elif gender_lower in ['female', 'f', 'woman', 'girl']:
-            return 'Female'
-        else:
-            return 'Unknown'
+        return 'Female'
+
     
     def get_standard_categories(self) -> List[str]:
         """Get list of standard gender categories.
@@ -53,7 +51,7 @@ class UKSexClassifier(IndividualLevelClassifier):
         Returns:
             List of standard gender categories
         """
-        return ['Male', 'Female', 'Unknown']
+        return ['Male', 'Female']
     
     def get_label_map(self) -> Dict[str, str]:
         """Get mapping from internal labels to display labels.
@@ -63,8 +61,7 @@ class UKSexClassifier(IndividualLevelClassifier):
         """
         return {
             'Male': 'Male',
-            'Female': 'Female', 
-            'Unknown': 'Unknown/Not specified'
+            'Female': 'Female'
         }
     
     def get_label_order(self) -> List[str]:
@@ -73,7 +70,7 @@ class UKSexClassifier(IndividualLevelClassifier):
         Returns:
             List of labels in logical order
         """
-        return ['Male', 'Female', 'Unknown']
+        return ['Male', 'Female']
     
     def compute_observed_distribution(self, synthetic_df: pd.DataFrame, **kwargs) -> Dict[str, float]:
         """Compute gender/sex distribution.
@@ -115,8 +112,7 @@ class UKSexClassifier(IndividualLevelClassifier):
         """
         descriptions = {
             'Male': 'Male individuals',
-            'Female': 'Female individuals',
-            'Unknown': 'Unknown or unspecified gender'
+            'Female': 'Female individuals'
         }
         return descriptions.get(category, category)
     

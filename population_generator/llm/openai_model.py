@@ -3,7 +3,7 @@
 import os
 from openai import AzureOpenAI
 from typing import Dict, Any, List, Union, Optional
-from .base import BaseLLM
+from .base import BaseLLM, LLMResponse, TokenUsage
 
 
 class OpenAIModel(BaseLLM):
@@ -28,6 +28,8 @@ class OpenAIModel(BaseLLM):
             top_p: Top-p sampling parameter
             top_k: Top-k sampling parameter (note: Azure OpenAI doesn't use top_k)
         """
+        super().__init__()
+        
         # Get Azure endpoint from parameter or environment variable
         if azure_endpoint is None:
             azure_endpoint = os.getenv("AZURE_OPENAI_ENDPOINT")
@@ -67,6 +69,42 @@ class OpenAIModel(BaseLLM):
         else:
             return self._single_request(prompt, timeout)
     
+    def generate_text_with_metadata(self, prompt: Union[str, List[str]], timeout: int = 30) -> LLMResponse:
+        """Generate text with token usage metadata."""
+        if isinstance(prompt, list):
+            # Handle batch requests - sum up token usage
+            responses = []
+            total_input = 0
+            total_output = 0
+            
+            for p in prompt:
+                response = self._single_request_with_metadata(p, timeout)
+                responses.append(response.choices[0].message.content)
+                if response.usage:
+                    total_input += response.usage.prompt_tokens
+                    total_output += response.usage.completion_tokens
+            
+            token_usage = TokenUsage(
+                input_tokens=total_input,
+                output_tokens=total_output,
+                total_tokens=total_input + total_output
+            ) if total_input > 0 else None
+            
+            return LLMResponse(content=responses, token_usage=token_usage)
+        else:
+            response = self._single_request_with_metadata(prompt, timeout)
+            content = response.choices[0].message.content
+            
+            token_usage = None
+            if response.usage:
+                token_usage = TokenUsage(
+                    input_tokens=response.usage.prompt_tokens,
+                    output_tokens=response.usage.completion_tokens,
+                    total_tokens=response.usage.total_tokens
+                )
+            
+            return LLMResponse(content=content, token_usage=token_usage)
+
     def _single_request(self, prompt: str, timeout: int) -> str:
         """Make a single request to Azure OpenAI API."""
         try:
@@ -78,6 +116,20 @@ class OpenAIModel(BaseLLM):
                 timeout=timeout
             )
             return response.choices[0].message.content
+        except Exception as e:
+            raise Exception(f"Azure OpenAI API request failed: {str(e)}")
+    
+    def _single_request_with_metadata(self, prompt: str, timeout: int):
+        """Make a single request to Azure OpenAI API with full response metadata."""
+        try:
+            response = self.client.chat.completions.create(
+                model=self.model_name,
+                messages=[{"role": "user", "content": prompt}],
+                temperature=self.temperature,
+                top_p=self.top_p,
+                timeout=timeout
+            )
+            return response
         except Exception as e:
             raise Exception(f"Azure OpenAI API request failed: {str(e)}")
     

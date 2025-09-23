@@ -1,15 +1,20 @@
-"""Complete example using Azure OpenAI model."""
+"""Example using Azure OpenAI model with UK classifiers for statistical feedback."""
 
 import os
 from dotenv import load_dotenv
 
 from population_generator import PopulationGenerator
 from population_generator.llm import OpenAIModel
-from population_generator.contrib.classifiers.uk import UKHouseholdCompositionClassifier, UKHouseholdSizeClassifier
+from population_generator.contrib.classifiers.uk import (
+    UKHouseholdSizeClassifier,
+    UKHouseholdCompositionClassifier, 
+    UKAgeClassifier,
+    UKSexClassifier
+)
 
 
 def main():
-    """Run complete population generation with Azure OpenAI."""
+    """Demonstrate Azure OpenAI model with UK classifiers for statistical feedback."""
     
     # Load environment variables
     load_dotenv(".env")
@@ -47,39 +52,86 @@ def main():
     
     # Load prompt and schema
     try:
-        prompt = generator.prompt_manager.load_prompt(
-            "basic_household.txt",
-            {"LOCATION": location, "TOTAL_HOUSEHOLDS": "5"}
-        )
+        prompt = generator.prompt_manager.load_prompt("basic_household.txt")
         schema = generator.data_loader.load_schema("household_basic.json")
     except FileNotFoundError as e:
         print(f"Error loading files: {e}")
         print("Make sure you have the example data files in examples/data/ and examples/prompts/")
         return
     
+    # Register UK classifiers with their corresponding target data
+    print("Loading UK classifiers and target data...")
+    
+    # 1. Household Size Classifier
+    household_size_classifier = UKHouseholdSizeClassifier()
+    generator.prompt_manager.register_classifier(
+        "HOUSEHOLD_SIZE_STATS",
+        household_size_classifier,
+        target_file="targets/uk_household_size.csv"
+    )
+    
+    # 2. Household Composition Classifier  
+    household_composition_classifier = UKHouseholdCompositionClassifier()
+    generator.prompt_manager.register_classifier(
+        "HOUSEHOLD_COMPOSITION_STATS",
+        household_composition_classifier,
+        target_file="targets/uk_household_composition.csv"
+    )
+    
+    # 3. Age Classifier
+    age_classifier = UKAgeClassifier()
+    generator.prompt_manager.register_classifier(
+        "AGE_STATS",
+        age_classifier,
+        target_file="targets/uk_age_distribution.csv"
+    )
+    
+    # 4. Sex Classifier
+    sex_classifier = UKSexClassifier()
+    generator.prompt_manager.register_classifier(
+        "SEX_STATS",
+        sex_classifier,
+        target_file="targets/uk_sex_distribution.csv"
+    )
+    
+    print("✓ All UK classifiers registered with target data")
+    
     try:
-        print("Generating 5 households using Azure OpenAI GPT-4o-mini...")
+        print(f"\nGenerating 15 households for {location} using Azure OpenAI...")
+        print("This will demonstrate statistical feedback between batches.\n")
         
-        # Generate households
+        # Generate households with statistical feedback
         households = generator.generate_households(
-            n_households=5,
+            n_households=15,
             model=llm,
             base_prompt=prompt,
             schema=schema,
-            location="London",
-            batch_size=2
+            location=location,
+            batch_size=5  # Small batches to see feedback in action
         )
         
         print(f"\n🎉 Successfully generated {len(households)} households!")
         
-        # Display results
-        for i, household in enumerate(households, 1):
-            print(f"\n--- Household {i} ---")
+        # Display summary statistics
+        total_people = sum(len(h.get('household', [])) for h in households)
+        print(f"Total people generated: {total_people}")
+        
+        # Show sample households
+        print("\n--- Sample Households ---")
+        for i, household in enumerate(households[:3], 1):
+            print(f"\nHousehold {i}:")
             for person in household.get('household', []):
-                print(f"{person.get('age', '?')} years old, {person.get('gender', '?')}, {person.get('relationship_to_head', '?')}")
+                age = person.get('age', '?')
+                gender = person.get('gender', '?')  
+                relationship = person.get('relationship', '?')  # Fixed: was relationship_to_head
+                print(f"  • {age} year old {gender} ({relationship})")
+        
+        if len(households) > 3:
+            print(f"\n... and {len(households) - 3} more households")
 
     except Exception as e:
         print(f"Error during generation: {e}")
+        print("Make sure your Azure OpenAI credentials are correct and you have API access.")
 
 
 if __name__ == "__main__":

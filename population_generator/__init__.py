@@ -10,5 +10,6 @@ __email__ = "your.email@example.com"
 
 from .core.generator import PopulationGenerator
 from .core.config import Config
+from .utils.data_export import PopulationDataSaver, save_generation_results
 
-__all__ = ["PopulationGenerator", "Config"]
+__all__ = ["PopulationGenerator", "Config", "PopulationDataSaver", "save_generation_results"]

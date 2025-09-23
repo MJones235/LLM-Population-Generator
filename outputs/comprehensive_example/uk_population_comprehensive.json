@@ -1,0 +1,1041 @@
+{
+  "metadata": {
+    "timestamp": "2025-09-23T16:58:36.658065",
+    "model_info": {
+      "name": "gpt-4o-mini",
+      "type": "OpenAI",
+      "temperature": 0.7,
+      "api_version": "2024-12-01-preview",
+      "provider": "Azure OpenAI"
+    },
+    "generation_parameters": {
+      "n_households": 30,
+      "batch_size": 10,
+      "location": "London",
+      "schema_type": "household_basic",
+      "validation_enabled": true,
+      "failure_tracking_enabled": true,
+      "cost_tracking_enabled": true,
+      "statistical_feedback_enabled": true,
+      "classifiers_used": [
+        "HOUSEHOLD_SIZE_STATS",
+        "HOUSEHOLD_COMPOSITION_STATS",
+        "AGE_STATS",
+        "SEX_STATS"
+      ]
+    },
+    "data_sources": [
+      "UK Census 2021 - Household size distribution",
+      "UK Census 2021 - Household composition",
+      "UK Census 2021 - Age distribution",
+      "UK Census 2021 - Sex distribution"
+    ],
+    "statistics_config": {
+      "registered_providers": [
+        "ukhouseholdsizeclassifier_uk_census",
+        "ukhouseholdcompositionclassifier_uk_census",
+        "ukageclassifier_uk_census",
+        "uksexclassifier_uk_census"
+      ],
+      "placeholder_mappings": {
+        "HOUSEHOLD_SIZE_STATS": "ukhouseholdsizeclassifier_uk_census",
+        "HOUSEHOLD_COMPOSITION_STATS": "ukhouseholdcompositionclassifier_uk_census",
+        "AGE_STATS": "ukageclassifier_uk_census",
+        "SEX_STATS": "uksexclassifier_uk_census"
+      },
+      "flexible_loading_enabled": true,
+      "target_data_files": [
+        "examples/data/targets/uk_household_size.csv",
+        "examples/data/targets/uk_household_composition.csv",
+        "examples/data/targets/uk_age_distribution.csv",
+        "examples/data/targets/uk_sex_distribution.csv"
+      ]
+    },
+    "cost_tracking": {
+      "total_calls": 30,
+      "total_tokens": 26187,
+      "total_cost": 0.0048,
+      "average_tokens_per_call": 872.9,
+      "cost_per_household": 0.00015999999999999999
+    },
+    "failure_analysis": {
+      "generation_success_metrics": {
+        "total_prompts": 30,
+        "success_rate": 1.0,
+        "failure_rate": 0.0,
+        "successful_prompts": 30,
+        "failed_prompts": 0
+      },
+      "failure_type_breakdown": {
+        "json_parsing_errors": 0,
+        "schema_validation_errors": 0,
+        "custom_validation_errors": 0,
+        "timeout_errors": 0,
+        "model_errors": 0,
+        "total_failure_attempts": 0
+      },
+      "retry_behavior_analysis": {
+        "average_attempts_per_prompt": 1.0,
+        "maximum_attempts_single_prompt": 1,
+        "prompts_requiring_retry": 0,
+        "retry_success_rate": 0.0,
+        "failure_distribution": {
+          "failed_after_1_attempt": 0,
+          "failed_after_2_attempts": 0,
+          "failed_after_3_attempts": 0
+        }
+      },
+      "performance_metrics": {
+        "total_generation_time_seconds": 31.02,
+        "average_time_per_prompt_seconds": 1.03,
+        "average_time_per_successful_prompt_seconds": 1.03,
+        "efficiency_loss_due_to_failures_percent": 0.0
+      },
+      "metadata": {
+        "tracking_session_duration_seconds": 31.3,
+        "data_collection_timestamp": "2025-09-23T16:58:36.658056",
+        "failure_tracking_version": "1.0",
+        "privacy_note": "Prompts are hashed for privacy; raw responses truncated to 500 characters"
+      }
+    },
+    "run_id": "98fd864b0a26"
+  },
+  "households": [
+    {
+      "household": [
+        {
+          "age": 35,
+          "gender": "Female",
+          "relationship": "Head"
+        },
+        {
+          "age": 10,
+          "gender": "Male",
+          "relationship": "Child"
+        },
+        {
+          "age": 8,
+          "gender": "Female",
+          "relationship": "Child"
+        }
+      ]
+    },
+    {
+      "household": [
+        {
+          "age": 35,
+          "gender": "Female",
+          "relationship": "Head"
+        },
+        {
+          "age": 10,
+          "gender": "Male",
+          "relationship": "Child"
+        }
+      ]
+    },
+    {
+      "household": [
+        {
+          "age": 32,
+          "gender": "Female",
+          "relationship": "Head"
+        },
+        {
+          "age": 6,
+          "gender": "Male",
+          "relationship": "Child"
+        },
+        {
+          "age": 4,
+          "gender": "Female",
+          "relationship": "Child"
+        }
+      ]
+    },
+    {
+      "household": [
+        {
+          "age": 34,
+          "gender": "Female",
+          "relationship": "Head"
+        },
+        {
+          "age": 8,
+          "gender": "Male",
+          "relationship": "Child"
+        }
+      ]
+    },
+    {
+      "household": [
+        {
+          "age": 34,
+          "gender": "Female",
+          "relationship": "Head"
+        },
+        {
+          "age": 8,
+          "gender": "Male",
+          "relationship": "Child"
+        },
+        {
+          "age": 5,
+          "gender": "Female",
+          "relationship": "Child"
+        }
+      ]
+    },
+    {
+      "household": [
+        {
+          "age": 35,
+          "gender": "Female",
+          "relationship": "Head"
+        },
+        {
+          "age": 10,
+          "gender": "Male",
+          "relationship": "Child"
+        }
+      ]
+    },
+    {
+      "household": [
+        {
+          "age": 34,
+          "gender": "Female",
+          "relationship": "Head"
+        },
+        {
+          "age": 7,
+          "gender": "Male",
+          "relationship": "Child"
+        }
+      ]
+    },
+    {
+      "household": [
+        {
+          "age": 34,
+          "gender": "Female",
+          "relationship": "Head"
+        },
+        {
+          "age": 10,
+          "gender": "Male",
+          "relationship": "Child"
+        },
+        {
+          "age": 7,
+          "gender": "Female",
+          "relationship": "Child"
+        }
+      ]
+    },
+    {
+      "household": [
+        {
+          "age": 34,
+          "gender": "Female",
+          "relationship": "Head"
+        },
+        {
+          "age": 10,
+          "gender": "Male",
+          "relationship": "Child"
+        },
+        {
+          "age": 8,
+          "gender": "Female",
+          "relationship": "Child"
+        }
+      ]
+    },
+    {
+      "household": [
+        {
+          "age": 36,
+          "gender": "Female",
+          "relationship": "Head"
+        },
+        {
+          "age": 10,
+          "gender": "Male",
+          "relationship": "Child"
+        },
+        {
+          "age": 8,
+          "gender": "Female",
+          "relationship": "Child"
+        }
+      ]
+    },
+    {
+      "household": [
+        {
+          "age": 68,
+          "gender": "Female",
+          "relationship": "Head"
+        },
+        {
+          "age": 25,
+          "gender": "Male",
+          "relationship": "Child"
+        }
+      ]
+    },
+    {
+      "household": [
+        {
+          "age": 28,
+          "gender": "Male",
+          "relationship": "Head"
+        },
+        {
+          "age": 26,
+          "gender": "Female",
+          "relationship": "Partner"
+        }
+      ]
+    },
+    {
+      "household": [
+        {
+          "age": 70,
+          "gender": "Female",
+          "relationship": "Head"
+        },
+        {
+          "age": 45,
+          "gender": "Male",
+          "relationship": "Child"
+        }
+      ]
+    },
+    {
+      "household": [
+        {
+          "age": 68,
+          "gender": "Female",
+          "relationship": "Head"
+        },
+        {
+          "age": 30,
+          "gender": "Male",
+          "relationship": "Child"
+        }
+      ]
+    },
+    {
+      "household": [
+        {
+          "age": 67,
+          "gender": "Female",
+          "relationship": "Head"
+        },
+        {
+          "age": 30,
+          "gender": "Male",
+          "relationship": "Child"
+        }
+      ]
+    },
+    {
+      "household": [
+        {
+          "age": 68,
+          "gender": "Female",
+          "relationship": "Head"
+        },
+        {
+          "age": 70,
+          "gender": "Male",
+          "relationship": "Housemate"
+        }
+      ]
+    },
+    {
+      "household": [
+        {
+          "age": 28,
+          "gender": "Male",
+          "relationship": "Head"
+        },
+        {
+          "age": 25,
+          "gender": "Female",
+          "relationship": "Partner"
+        }
+      ]
+    },
+    {
+      "household": [
+        {
+          "age": 28,
+          "gender": "Female",
+          "relationship": "Head"
+        },
+        {
+          "age": 3,
+          "gender": "Male",
+          "relationship": "Child"
+        }
+      ]
+    },
+    {
+      "household": [
+        {
+          "age": 25,
+          "gender": "Male",
+          "relationship": "Head"
+        },
+        {
+          "age": 23,
+          "gender": "Female",
+          "relationship": "Partner"
+        }
+      ]
+    },
+    {
+      "household": [
+        {
+          "age": 28,
+          "gender": "Male",
+          "relationship": "Head"
+        },
+        {
+          "age": 25,
+          "gender": "Female",
+          "relationship": "Housemate"
+        }
+      ]
+    },
+    {
+      "household": [
+        {
+          "age": 68,
+          "gender": "Female",
+          "relationship": "Head"
+        },
+        {
+          "age": 35,
+          "gender": "Male",
+          "relationship": "Child"
+        }
+      ]
+    },
+    {
+      "household": [
+        {
+          "age": 68,
+          "gender": "Female",
+          "relationship": "Head"
+        },
+        {
+          "age": 30,
+          "gender": "Male",
+          "relationship": "Child"
+        }
+      ]
+    },
+    {
+      "household": [
+        {
+          "age": 67,
+          "gender": "Female",
+          "relationship": "Head"
+        }
+      ]
+    },
+    {
+      "household": [
+        {
+          "age": 70,
+          "gender": "Female",
+          "relationship": "Head"
+        },
+        {
+          "age": 40,
+          "gender": "Male",
+          "relationship": "Child"
+        }
+      ]
+    },
+    {
+      "household": [
+        {
+          "age": 67,
+          "gender": "Female",
+          "relationship": "Head"
+        },
+        {
+          "age": 32,
+          "gender": "Male",
+          "relationship": "Child"
+        }
+      ]
+    },
+    {
+      "household": [
+        {
+          "age": 67,
+          "gender": "Female",
+          "relationship": "Head"
+        }
+      ]
+    },
+    {
+      "household": [
+        {
+          "age": 67,
+          "gender": "Female",
+          "relationship": "Head"
+        }
+      ]
+    },
+    {
+      "household": [
+        {
+          "age": 67,
+          "gender": "Female",
+          "relationship": "Head"
+        },
+        {
+          "age": 40,
+          "gender": "Male",
+          "relationship": "Child"
+        }
+      ]
+    },
+    {
+      "household": [
+        {
+          "age": 67,
+          "gender": "Female",
+          "relationship": "Head"
+        },
+        {
+          "age": 30,
+          "gender": "Male",
+          "relationship": "Child"
+        }
+      ]
+    },
+    {
+      "household": [
+        {
+          "age": 68,
+          "gender": "Female",
+          "relationship": "Head"
+        },
+        {
+          "age": 71,
+          "gender": "Male",
+          "relationship": "Child"
+        }
+      ]
+    }
+  ],
+  "statistical_analysis": {
+    "ukhouseholdsizeclassifier_uk_census": {
+      "observed_distribution": {
+        "1": 10.0,
+        "2": 70.0,
+        "3": 20.0,
+        "4": 0.0,
+        "5": 0.0,
+        "6": 0.0,
+        "7": 0.0,
+        "8": 0.0
+      },
+      "sample_size": 63,
+      "households_analyzed": 30,
+      "fit_metrics": {
+        "jensen_shannon_divergence": 0.356372410490521,
+        "total_variation_distance": 0.39999999999999997,
+        "chi_squared": 44.099999999999994
+      }
+    },
+    "ukhouseholdcompositionclassifier_uk_census": {
+      "observed_distribution": {
+        "Lone parent": 73.33333333333333,
+        "Couple": 10.0,
+        "One-person aged 66+ years": 10.0,
+        "Other": 6.666666666666667
+      },
+      "sample_size": 63,
+      "households_analyzed": 30,
+      "fit_metrics": {
+        "jensen_shannon_divergence": 0.8325546111576977,
+        "total_variation_distance": 1.0,
+        "chi_squared": 63.0
+      }
+    },
+    "ukageclassifier_uk_census": {
+      "observed_distribution": {
+        "30-39": 25.4,
+        "60-69": 20.63,
+        "0–9": 17.46,
+        "20-29": 15.87,
+        "10-19": 9.52,
+        "70-79": 6.35,
+        "40-49": 4.76,
+        "50-59": 0.0,
+        "80+": 0.0
+      },
+      "sample_size": 63,
+      "households_analyzed": 30,
+      "fit_metrics": {
+        "jensen_shannon_divergence": 0.2840769924959105,
+        "total_variation_distance": 0.26865,
+        "chi_squared": 24.398678832859282
+      }
+    },
+    "uksexclassifier_uk_census": {
+      "observed_distribution": {
+        "Female": 57.14,
+        "Male": 42.86
+      },
+      "sample_size": 63,
+      "households_analyzed": 30,
+      "fit_metrics": {
+        "jensen_shannon_divergence": 0.043575077090665625,
+        "total_variation_distance": 0.06140000000000001,
+        "chi_squared": 0.9504100840336142
+      }
+    },
+    "_overall_fit_summary": {
+      "num_distributions": 4,
+      "distributions_with_targets": 4,
+      "avg_jensen_shannon": 0.3791447728086987,
+      "avg_total_variation": 0.43251249999999997,
+      "worst_jensen_shannon": 0.8325546111576977,
+      "best_jensen_shannon": 0.043575077090665625,
+      "distributions_summary": [
+        {
+          "name": "ukhouseholdsizeclassifier_uk_census",
+          "jensen_shannon": 0.356372410490521,
+          "total_variation": 0.39999999999999997
+        },
+        {
+          "name": "ukhouseholdcompositionclassifier_uk_census",
+          "jensen_shannon": 0.8325546111576977,
+          "total_variation": 1.0
+        },
+        {
+          "name": "ukageclassifier_uk_census",
+          "jensen_shannon": 0.2840769924959105,
+          "total_variation": 0.26865
+        },
+        {
+          "name": "uksexclassifier_uk_census",
+          "jensen_shannon": 0.043575077090665625,
+          "total_variation": 0.06140000000000001
+        }
+      ]
+    }
+  },
+  "target_comparisons": {
+    "ukhouseholdsizeclassifier_uk_census": {
+      "target_distribution": {
+        "1": 30.0,
+        "2": 35.0,
+        "3": 15.0,
+        "4": 12.0,
+        "5": 5.0,
+        "6": 2.0,
+        "7": 1.0
+      },
+      "observed_distribution": {
+        "1": 10.0,
+        "2": 70.0,
+        "3": 20.0,
+        "4": 0.0,
+        "5": 0.0,
+        "6": 0.0,
+        "7": 0.0,
+        "8": 0.0
+      },
+      "differences": {
+        "1": -20.0,
+        "6": -2.0,
+        "5": -5.0,
+        "7": -1.0,
+        "3": 5.0,
+        "8": 0.0,
+        "4": -12.0,
+        "2": 35.0
+      },
+      "fit_metrics": {
+        "jensen_shannon_divergence": 0.356372410490521,
+        "total_variation_distance": 0.39999999999999997,
+        "chi_squared": 44.099999999999994
+      }
+    },
+    "ukhouseholdcompositionclassifier_uk_census": {
+      "target_distribution": {
+        "One-person household: Aged 66 years and over": 30.0,
+        "One-person household: Other": 25.0,
+        "Single family household: Lone parent household": 25.0,
+        "Single family household: Couple family household": 10.0,
+        "Single family household: Couple family household: Dependent children": 10.0
+      },
+      "observed_distribution": {
+        "Lone parent": 73.33333333333333,
+        "Couple": 10.0,
+        "One-person aged 66+ years": 10.0,
+        "Other": 6.666666666666667
+      },
+      "differences": {
+        "Single family household: Couple family household: Dependent children": -10.0,
+        "One-person aged 66+ years": 10.0,
+        "Single family household: Couple family household": -10.0,
+        "One-person household: Other": -25.0,
+        "Single family household: Lone parent household": -25.0,
+        "One-person household: Aged 66 years and over": -30.0,
+        "Other": 6.666666666666667,
+        "Lone parent": 73.33333333333333,
+        "Couple": 10.0
+      },
+      "fit_metrics": {
+        "jensen_shannon_divergence": 0.8325546111576977,
+        "total_variation_distance": 1.0,
+        "chi_squared": 63.0
+      }
+    },
+    "ukageclassifier_uk_census": {
+      "target_distribution": {
+        "0–9": 12.0,
+        "10-19": 11.5,
+        "20-29": 14.0,
+        "30-39": 15.5,
+        "40-49": 13.0,
+        "50-59": 12.5,
+        "60-69": 11.0,
+        "70-79": 7.5,
+        "80+": 3.0
+      },
+      "observed_distribution": {
+        "30-39": 25.4,
+        "60-69": 20.63,
+        "0–9": 17.46,
+        "20-29": 15.87,
+        "10-19": 9.52,
+        "70-79": 6.35,
+        "40-49": 4.76,
+        "50-59": 0.0,
+        "80+": 0.0
+      },
+      "differences": {
+        "50-59": -12.5,
+        "80+": -3.0,
+        "20-29": 1.8699999999999992,
+        "40-49": -8.24,
+        "10-19": -1.9800000000000004,
+        "30-39": 9.899999999999999,
+        "70-79": -1.1500000000000004,
+        "0–9": 5.460000000000001,
+        "60-69": 9.629999999999999
+      },
+      "fit_metrics": {
+        "jensen_shannon_divergence": 0.2840769924959105,
+        "total_variation_distance": 0.26865,
+        "chi_squared": 24.398678832859282
+      }
+    },
+    "uksexclassifier_uk_census": {
+      "target_distribution": {
+        "Male": 49.0,
+        "Female": 51.0
+      },
+      "observed_distribution": {
+        "Female": 57.14,
+        "Male": 42.86
+      },
+      "differences": {
+        "Male": -6.140000000000001,
+        "Female": 6.140000000000001
+      },
+      "fit_metrics": {
+        "jensen_shannon_divergence": 0.043575077090665625,
+        "total_variation_distance": 0.06140000000000001,
+        "chi_squared": 0.9504100840336142
+      }
+    }
+  },
+  "format_version": "1.0",
+  "description": "Generated population data with comprehensive metadata for analysis",
+  "detailed_failure_records": [
+    {
+      "prompt_hash": "be995f39b6150778",
+      "total_attempts": 1,
+      "final_success": true,
+      "attempts": [],
+      "first_attempt_timestamp": "2025-09-23T16:58:05.398636",
+      "final_attempt_timestamp": "2025-09-23T16:58:06.998191",
+      "total_time_ms": 1597.6247787475586
+    },
+    {
+      "prompt_hash": "be995f39b6150778",
+      "total_attempts": 1,
+      "final_success": true,
+      "attempts": [],
+      "first_attempt_timestamp": "2025-09-23T16:58:06.998300",
+      "final_attempt_timestamp": "2025-09-23T16:58:08.349206",
+      "total_time_ms": 1350.1243591308594
+    },
+    {
+      "prompt_hash": "be995f39b6150778",
+      "total_attempts": 1,
+      "final_success": true,
+      "attempts": [],
+      "first_attempt_timestamp": "2025-09-23T16:58:08.349289",
+      "final_attempt_timestamp": "2025-09-23T16:58:10.041615",
+      "total_time_ms": 1691.6663646697998
+    },
+    {
+      "prompt_hash": "be995f39b6150778",
+      "total_attempts": 1,
+      "final_success": true,
+      "attempts": [],
+      "first_attempt_timestamp": "2025-09-23T16:58:10.041667",
+      "final_attempt_timestamp": "2025-09-23T16:58:10.730739",
+      "total_time_ms": 688.392162322998
+    },
+    {
+      "prompt_hash": "be995f39b6150778",
+      "total_attempts": 1,
+      "final_success": true,
+      "attempts": [],
+      "first_attempt_timestamp": "2025-09-23T16:58:10.730791",
+      "final_attempt_timestamp": "2025-09-23T16:58:11.810401",
+      "total_time_ms": 1078.2012939453125
+    },
+    {
+      "prompt_hash": "be995f39b6150778",
+      "total_attempts": 1,
+      "final_success": true,
+      "attempts": [],
+      "first_attempt_timestamp": "2025-09-23T16:58:11.810469",
+      "final_attempt_timestamp": "2025-09-23T16:58:12.650841",
+      "total_time_ms": 839.146614074707
+    },
+    {
+      "prompt_hash": "be995f39b6150778",
+      "total_attempts": 1,
+      "final_success": true,
+      "attempts": [],
+      "first_attempt_timestamp": "2025-09-23T16:58:12.650917",
+      "final_attempt_timestamp": "2025-09-23T16:58:13.777615",
+      "total_time_ms": 1125.5147457122803
+    },
+    {
+      "prompt_hash": "be995f39b6150778",
+      "total_attempts": 1,
+      "final_success": true,
+      "attempts": [],
+      "first_attempt_timestamp": "2025-09-23T16:58:13.777682",
+      "final_attempt_timestamp": "2025-09-23T16:58:14.801463",
+      "total_time_ms": 1022.3889350891113
+    },
+    {
+      "prompt_hash": "be995f39b6150778",
+      "total_attempts": 1,
+      "final_success": true,
+      "attempts": [],
+      "first_attempt_timestamp": "2025-09-23T16:58:14.801532",
+      "final_attempt_timestamp": "2025-09-23T16:58:15.936095",
+      "total_time_ms": 1133.3680152893066
+    },
+    {
+      "prompt_hash": "be995f39b6150778",
+      "total_attempts": 1,
+      "final_success": true,
+      "attempts": [],
+      "first_attempt_timestamp": "2025-09-23T16:58:15.936175",
+      "final_attempt_timestamp": "2025-09-23T16:58:16.905993",
+      "total_time_ms": 968.6253070831299
+    },
+    {
+      "prompt_hash": "694dcdeb6682ecc1",
+      "total_attempts": 1,
+      "final_success": true,
+      "attempts": [],
+      "first_attempt_timestamp": "2025-09-23T16:58:17.069185",
+      "final_attempt_timestamp": "2025-09-23T16:58:17.975090",
+      "total_time_ms": 905.2374362945557
+    },
+    {
+      "prompt_hash": "694dcdeb6682ecc1",
+      "total_attempts": 1,
+      "final_success": true,
+      "attempts": [],
+      "first_attempt_timestamp": "2025-09-23T16:58:17.975139",
+      "final_attempt_timestamp": "2025-09-23T16:58:18.896597",
+      "total_time_ms": 920.8521842956543
+    },
+    {
+      "prompt_hash": "694dcdeb6682ecc1",
+      "total_attempts": 1,
+      "final_success": true,
+      "attempts": [],
+      "first_attempt_timestamp": "2025-09-23T16:58:18.896643",
+      "final_attempt_timestamp": "2025-09-23T16:58:19.715227",
+      "total_time_ms": 817.9852962493896
+    },
+    {
+      "prompt_hash": "694dcdeb6682ecc1",
+      "total_attempts": 1,
+      "final_success": true,
+      "attempts": [],
+      "first_attempt_timestamp": "2025-09-23T16:58:19.715275",
+      "final_attempt_timestamp": "2025-09-23T16:58:20.739724",
+      "total_time_ms": 1023.7691402435303
+    },
+    {
+      "prompt_hash": "694dcdeb6682ecc1",
+      "total_attempts": 1,
+      "final_success": true,
+      "attempts": [],
+      "first_attempt_timestamp": "2025-09-23T16:58:20.739771",
+      "final_attempt_timestamp": "2025-09-23T16:58:21.661420",
+      "total_time_ms": 920.9802150726318
+    },
+    {
+      "prompt_hash": "694dcdeb6682ecc1",
+      "total_attempts": 1,
+      "final_success": true,
+      "attempts": [],
+      "first_attempt_timestamp": "2025-09-23T16:58:21.661465",
+      "final_attempt_timestamp": "2025-09-23T16:58:22.992631",
+      "total_time_ms": 1330.533742904663
+    },
+    {
+      "prompt_hash": "694dcdeb6682ecc1",
+      "total_attempts": 1,
+      "final_success": true,
+      "attempts": [],
+      "first_attempt_timestamp": "2025-09-23T16:58:22.992683",
+      "final_attempt_timestamp": "2025-09-23T16:58:24.222412",
+      "total_time_ms": 1228.5430431365967
+    },
+    {
+      "prompt_hash": "694dcdeb6682ecc1",
+      "total_attempts": 1,
+      "final_success": true,
+      "attempts": [],
+      "first_attempt_timestamp": "2025-09-23T16:58:24.222487",
+      "final_attempt_timestamp": "2025-09-23T16:58:24.939012",
+      "total_time_ms": 715.3208255767822
+    },
+    {
+      "prompt_hash": "694dcdeb6682ecc1",
+      "total_attempts": 1,
+      "final_success": true,
+      "attempts": [],
+      "first_attempt_timestamp": "2025-09-23T16:58:24.939086",
+      "final_attempt_timestamp": "2025-09-23T16:58:25.758192",
+      "total_time_ms": 817.9364204406738
+    },
+    {
+      "prompt_hash": "694dcdeb6682ecc1",
+      "total_attempts": 1,
+      "final_success": true,
+      "attempts": [],
+      "first_attempt_timestamp": "2025-09-23T16:58:25.758269",
+      "final_attempt_timestamp": "2025-09-23T16:58:26.577826",
+      "total_time_ms": 818.4299468994141
+    },
+    {
+      "prompt_hash": "870ccf70adc5011d",
+      "total_attempts": 1,
+      "final_success": true,
+      "attempts": [],
+      "first_attempt_timestamp": "2025-09-23T16:58:26.606627",
+      "final_attempt_timestamp": "2025-09-23T16:58:27.702728",
+      "total_time_ms": 1095.4411029815674
+    },
+    {
+      "prompt_hash": "870ccf70adc5011d",
+      "total_attempts": 1,
+      "final_success": true,
+      "attempts": [],
+      "first_attempt_timestamp": "2025-09-23T16:58:27.702782",
+      "final_attempt_timestamp": "2025-09-23T16:58:28.727950",
+      "total_time_ms": 1023.94700050354
+    },
+    {
+      "prompt_hash": "870ccf70adc5011d",
+      "total_attempts": 1,
+      "final_success": true,
+      "attempts": [],
+      "first_attempt_timestamp": "2025-09-23T16:58:28.728023",
+      "final_attempt_timestamp": "2025-09-23T16:58:29.473593",
+      "total_time_ms": 744.4868087768555
+    },
+    {
+      "prompt_hash": "870ccf70adc5011d",
+      "total_attempts": 1,
+      "final_success": true,
+      "attempts": [],
+      "first_attempt_timestamp": "2025-09-23T16:58:29.473664",
+      "final_attempt_timestamp": "2025-09-23T16:58:30.459798",
+      "total_time_ms": 984.9357604980469
+    },
+    {
+      "prompt_hash": "870ccf70adc5011d",
+      "total_attempts": 1,
+      "final_success": true,
+      "attempts": [],
+      "first_attempt_timestamp": "2025-09-23T16:58:30.459874",
+      "final_attempt_timestamp": "2025-09-23T16:58:31.337761",
+      "total_time_ms": 876.6415119171143
+    },
+    {
+      "prompt_hash": "870ccf70adc5011d",
+      "total_attempts": 1,
+      "final_success": true,
+      "attempts": [],
+      "first_attempt_timestamp": "2025-09-23T16:58:31.337838",
+      "final_attempt_timestamp": "2025-09-23T16:58:32.311967",
+      "total_time_ms": 972.9526042938232
+    },
+    {
+      "prompt_hash": "870ccf70adc5011d",
+      "total_attempts": 1,
+      "final_success": true,
+      "attempts": [],
+      "first_attempt_timestamp": "2025-09-23T16:58:32.312041",
+      "final_attempt_timestamp": "2025-09-23T16:58:33.233654",
+      "total_time_ms": 920.4025268554688
+    },
+    {
+      "prompt_hash": "870ccf70adc5011d",
+      "total_attempts": 1,
+      "final_success": true,
+      "attempts": [],
+      "first_attempt_timestamp": "2025-09-23T16:58:33.233733",
+      "final_attempt_timestamp": "2025-09-23T16:58:34.350185",
+      "total_time_ms": 1115.3173446655273
+    },
+    {
+      "prompt_hash": "870ccf70adc5011d",
+      "total_attempts": 1,
+      "final_success": true,
+      "attempts": [],
+      "first_attempt_timestamp": "2025-09-23T16:58:34.350258",
+      "final_attempt_timestamp": "2025-09-23T16:58:35.062321",
+      "total_time_ms": 710.9315395355225
+    },
+    {
+      "prompt_hash": "870ccf70adc5011d",
+      "total_attempts": 1,
+      "final_success": true,
+      "attempts": [],
+      "first_attempt_timestamp": "2025-09-23T16:58:35.062397",
+      "final_attempt_timestamp": "2025-09-23T16:58:36.645641",
+      "total_time_ms": 1582.0763111114502
+    }
+  ]
+}

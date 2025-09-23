@@ -1,0 +1,5 @@
+statistic,jensen_shannon_divergence,total_variation_distance,chi_squared,sample_size
+ukhouseholdsizeclassifier_uk_census,0.356372410490521,0.39999999999999997,44.099999999999994,63
+ukhouseholdcompositionclassifier_uk_census,0.8325546111576977,1.0,63.0,63
+ukageclassifier_uk_census,0.2840769924959105,0.26865,24.398678832859282,63
+uksexclassifier_uk_census,0.043575077090665625,0.06140000000000001,0.9504100840336142,63

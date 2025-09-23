@@ -7,7 +7,7 @@ import pandas as pd
 from pathlib import Path
 
 from ..core.config import Config
-from ..classifiers.base import DemographicClassifier, HouseholdLevelClassifier
+from ..classifiers.base import DemographicClassifier
 from .statistics import StatisticsManager
 
 

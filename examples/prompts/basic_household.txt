@@ -4,8 +4,24 @@ Your goal is to add one new household to a growing dataset, so that the generate
 
 ---
 
+CURRENT VS TARGET STATISTICS:
+
+Household Size Distribution:
+{HOUSEHOLD_SIZE_STATS}
+
+Household Composition Distribution:
+{HOUSEHOLD_COMPOSITION_STATS}
+
+Age Distribution:
+{AGE_STATS}
+
+Gender Distribution:
+{SEX_STATS}
+
+---
+
 INSTRUCTIONS:
-1. Review the current and target distributions for household size, composition, age, and gender (provided below).
+1. Review the current and target distributions above for household size, composition, age, and gender.
 2. Select a household size category where the current count is below its target.
 3. Choose a valid household composition for the selected size, prioritizing categories that are currently under-represented.
     - 1-person: contains a single adult of any age.
@@ -16,6 +32,6 @@ INSTRUCTIONS:
 5. For each person, include:
     - age (0–120)
     - gender ("Male" or "Female")
-    - relationship_to_head (first must be "Head" and be an adult; valid values: "Spouse", "Partner", "Child", "Parent", "Sibling", "Grandchild", "Grandparent", "Housemate", "Lodger", "Aunt", "Uncle", "Nephew", "Niece", "Cousin", "Child-in-law", "Parent-in-law", "Sibling-in-law")
+    - relationship (first must be "Head" and be an adult; valid values: "Spouse", "Partner", "Child", "Parent", "Sibling", "Grandchild", "Grandparent", "Housemate", "Lodger", "Aunt", "Uncle", "Nephew", "Niece", "Cousin", "Child-in-law", "Parent-in-law", "Sibling-in-law")
 6. Output only a JSON object with a "household" array containing these individuals. Do not include markdown, formatting, or explanations.
 
