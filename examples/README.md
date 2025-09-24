@@ -4,7 +4,7 @@ This directory contains example scripts demonstrating key features of the LLM Po
 
 ## Available Examples
 
-### `comprehensive_example.py` ⭐ **RECOMMENDED**
+### `comprehensive_example.py` 
 The main example showcasing ALL features of the LLM Population Generator. This comprehensive demonstration includes:
 
 **Core Features:**
@@ -25,12 +25,6 @@ The main example showcasing ALL features of the LLM Population Generator. This c
 - Real-time statistics and monitoring
 
 This example serves as both a complete demonstration and a template for production use.
-
-### `openai_example.py`
-Basic example showing Azure OpenAI integration with UK classifiers. Useful for:
-- Quick start with minimal configuration
-- Understanding core statistical feedback concepts
-- Testing Azure OpenAI connectivity
 
 ## Quick Start
 

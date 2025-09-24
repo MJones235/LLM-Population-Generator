@@ -23,7 +23,7 @@ class UKAgeSexPyramidClassifier(IndividualLevelClassifier):
             String label for the age/sex category (e.g., "Male_30-39")
         """
         age = individual['age']
-        gender = individual.get('gender', 'Unknown')
+        gender = individual.get('gender', 'Male')
         
         age_band = self._assign_age_band(age)
         return f"{gender}_{age_band}"
@@ -85,7 +85,7 @@ class UKAgeSexPyramidClassifier(IndividualLevelClassifier):
             Dictionary mapping age/sex categories to descriptive labels
         """
         _, age_labels = self.get_age_band_labels()
-        genders = ['Male', 'Female', 'Unknown']
+        genders = ['Male', 'Female']
         
         label_map = {}
         for gender in genders:
@@ -103,7 +103,7 @@ class UKAgeSexPyramidClassifier(IndividualLevelClassifier):
             List of labels ordered by gender then age (suitable for pyramid display)
         """
         _, age_labels = self.get_age_band_labels()
-        genders = ['Male', 'Female', 'Unknown']
+        genders = ['Male', 'Female']
         
         ordered_labels = []
         for gender in genders:

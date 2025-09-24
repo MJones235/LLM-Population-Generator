@@ -10,7 +10,7 @@ from .fit_metrics import DistributionalFitCalculator
 from .formatters import StatisticFormatter
 from .reporting import FitReporter
 from ...classifiers.base import DemographicClassifier
-from ..data_loading import FlexibleDataManager
+from ..data_loading import DataLoader
 
 
 class StatisticsManager:
@@ -26,7 +26,7 @@ class StatisticsManager:
         self.providers: Dict[str, StatisticProvider] = {}
         self.placeholder_mappings: Dict[str, str] = {}
         self.data_dir = Path(data_dir) if data_dir else None
-        self.data_manager = FlexibleDataManager()
+        self.data_manager = DataLoader()
         self.compute_fit_metrics = compute_fit_metrics
         self.fit_calculator = DistributionalFitCalculator()
         self.formatter = StatisticFormatter()
