@@ -23,7 +23,7 @@ class CostEstimate:
     input_cost: float
     output_cost: float
     total_cost: float
-    currency: str = "USD"
+    currency: str = "GBP"
 
 
 class TokenAnalyzer:
@@ -126,7 +126,7 @@ class TokenAnalyzer:
                 "total": round(total_cost, 4),
                 "input": round(sum(record["cost"].input_cost for record in self.session_data), 4),
                 "output": round(sum(record["cost"].output_cost for record in self.session_data), 4),
-                "currency": "USD"
+                "currency": "GBP"
             },
             "averages": {
                 "input_tokens_per_request": round(total_input / len(df), 1),

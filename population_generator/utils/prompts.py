@@ -161,11 +161,8 @@ class PromptManager:
         Returns:
             Enhanced prompt with statistical feedback
         """
-        # For first batch, no synthetic data available
-        if synthetic_df is None or len(synthetic_df) == 0:
-            return base_prompt
-            
         # Use the statistics manager to replace all registered placeholders
+        # For first batch (empty data), it will show target distributions only
         return self.statistics_manager.replace_placeholders_in_prompt(
             base_prompt, synthetic_df, format_type="comparison", **kwargs
         )

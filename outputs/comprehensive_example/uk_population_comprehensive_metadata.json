@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "timestamp": "2025-09-23T18:00:59.431550",
+    "timestamp": "2025-09-27T16:49:24.665316",
     "model_info": {
       "name": "gpt-4o-mini",
       "type": "OpenAI",
@@ -53,10 +53,10 @@
     },
     "cost_tracking": {
       "total_calls": 30,
-      "total_tokens": 17265,
-      "total_cost": 0.0036,
-      "average_tokens_per_call": 575.5,
-      "cost_per_household": 0.00012
+      "total_tokens": 30771,
+      "total_cost": 0.0055,
+      "average_tokens_per_call": 1025.7,
+      "cost_per_household": 0.00018333333333333334
     },
     "failure_analysis": {
       "generation_success_metrics": {
@@ -86,67 +86,522 @@
         }
       },
       "performance_metrics": {
-        "total_generation_time_seconds": 34.68,
-        "average_time_per_prompt_seconds": 1.16,
-        "average_time_per_successful_prompt_seconds": 1.16,
+        "total_generation_time_seconds": 21.26,
+        "average_time_per_prompt_seconds": 0.71,
+        "average_time_per_successful_prompt_seconds": 0.71,
         "efficiency_loss_due_to_failures_percent": 0.0
       },
       "metadata": {
-        "tracking_session_duration_seconds": 34.81,
-        "data_collection_timestamp": "2025-09-23T18:00:59.431539",
+        "tracking_session_duration_seconds": 21.56,
+        "data_collection_timestamp": "2025-09-27T16:49:24.665303",
         "failure_tracking_version": "1.0",
         "privacy_note": "Prompts are hashed for privacy; raw responses truncated to 500 characters"
       }
     },
-    "run_id": "8d84133e757b"
+    "run_id": "f3d5fb560ff3"
   },
   "statistical_analysis": {
     "ukhouseholdsizeclassifier_uk_census": {
       "observed_distribution": {
-        "1": 0.0,
-        "2": 36.67,
-        "3": 63.33,
+        "1": 16.67,
+        "2": 46.67,
+        "3": 36.67,
         "4": 0.0,
         "5": 0.0,
         "6": 0.0,
         "7": 0.0,
         "8": 0.0
       },
-      "sample_size": 79,
-      "households_analyzed": 30
+      "sample_size": 66,
+      "households_analyzed": 30,
+      "fit_metrics": {
+        "jensen_shannon_divergence": 0.32646872496577395,
+        "total_variation_distance": 0.33335000000000004,
+        "chi_squared": 40.33920094285715
+      }
     },
     "ukhouseholdcompositionclassifier_uk_census": {
       "observed_distribution": {
-        "Lone parent": 96.66666666666667,
-        "Couple with dependent children": 3.3333333333333335
+        "Lone parent": 43.333333333333336,
+        "Couple with dependent children": 23.333333333333332,
+        "One-person aged 66+ years": 16.666666666666664,
+        "Couple": 13.333333333333334,
+        "Other": 3.3333333333333335
       },
-      "sample_size": 79,
-      "households_analyzed": 30
+      "sample_size": 66,
+      "households_analyzed": 30,
+      "fit_metrics": {
+        "jensen_shannon_divergence": 0.8325546111576977,
+        "total_variation_distance": 1.0,
+        "chi_squared": 66.0
+      }
     },
     "ukageclassifier_uk_census": {
       "observed_distribution": {
-        "0–9": 41.77,
-        "30-39": 39.24,
-        "10-19": 18.99,
-        "20-29": 0.0,
-        "40-49": 0.0,
+        "30-39": 36.36,
+        "0-9": 22.73,
+        "60-69": 21.21,
+        "20-29": 7.58,
+        "40-49": 6.06,
+        "10-19": 3.03,
+        "70-79": 3.03,
         "50-59": 0.0,
-        "60-69": 0.0,
-        "70-79": 0.0,
         "80+": 0.0
       },
-      "sample_size": 79,
-      "households_analyzed": 30
+      "sample_size": 66,
+      "households_analyzed": 30,
+      "fit_metrics": {
+        "jensen_shannon_divergence": 0.34832268607402816,
+        "total_variation_distance": 0.41800000000000004,
+        "chi_squared": 51.609391209532546
+      }
     },
     "uksexclassifier_uk_census": {
       "observed_distribution": {
-        "Female": 62.03,
-        "Male": 37.97
+        "Female": 59.09,
+        "Male": 40.91
       },
-      "sample_size": 79,
-      "households_analyzed": 30
+      "sample_size": 66,
+      "households_analyzed": 30,
+      "fit_metrics": {
+        "jensen_shannon_divergence": 0.057531448226839504,
+        "total_variation_distance": 0.0809,
+        "chi_squared": 1.7285212484993981
+      }
+    },
+    "_overall_fit_summary": {
+      "num_distributions": 4,
+      "distributions_with_targets": 4,
+      "avg_jensen_shannon": 0.39121936760608483,
+      "avg_total_variation": 0.4580625,
+      "worst_jensen_shannon": 0.8325546111576977,
+      "best_jensen_shannon": 0.057531448226839504,
+      "distributions_summary": [
+        {
+          "name": "ukhouseholdsizeclassifier_uk_census",
+          "jensen_shannon": 0.32646872496577395,
+          "total_variation": 0.33335000000000004
+        },
+        {
+          "name": "ukhouseholdcompositionclassifier_uk_census",
+          "jensen_shannon": 0.8325546111576977,
+          "total_variation": 1.0
+        },
+        {
+          "name": "ukageclassifier_uk_census",
+          "jensen_shannon": 0.34832268607402816,
+          "total_variation": 0.41800000000000004
+        },
+        {
+          "name": "uksexclassifier_uk_census",
+          "jensen_shannon": 0.057531448226839504,
+          "total_variation": 0.0809
+        }
+      ]
     }
   },
-  "target_comparisons": {},
-  "format_version": "1.0"
+  "target_comparisons": {
+    "ukhouseholdsizeclassifier_uk_census": {
+      "target_distribution": {
+        "1": 30.0,
+        "2": 35.0,
+        "3": 15.0,
+        "4": 12.0,
+        "5": 5.0,
+        "6": 2.0,
+        "7": 1.0
+      },
+      "observed_distribution": {
+        "1": 16.67,
+        "2": 46.67,
+        "3": 36.67,
+        "4": 0.0,
+        "5": 0.0,
+        "6": 0.0,
+        "7": 0.0,
+        "8": 0.0
+      },
+      "differences": {
+        "6": -2.0,
+        "5": -5.0,
+        "8": 0.0,
+        "3": 21.67,
+        "2": 11.670000000000002,
+        "4": -12.0,
+        "1": -13.329999999999998,
+        "7": -1.0
+      },
+      "fit_metrics": {
+        "jensen_shannon_divergence": 0.32646872496577395,
+        "total_variation_distance": 0.33335000000000004,
+        "chi_squared": 40.33920094285715
+      }
+    },
+    "ukhouseholdcompositionclassifier_uk_census": {
+      "target_distribution": {
+        "One-person household: Aged 66 years and over": 30.0,
+        "One-person household: Other": 25.0,
+        "Single family household: Lone parent household": 25.0,
+        "Single family household: Couple family household": 10.0,
+        "Single family household: Couple family household: Dependent children": 10.0
+      },
+      "observed_distribution": {
+        "Lone parent": 43.333333333333336,
+        "Couple with dependent children": 23.333333333333332,
+        "One-person aged 66+ years": 16.666666666666664,
+        "Couple": 13.333333333333334,
+        "Other": 3.3333333333333335
+      },
+      "differences": {
+        "Single family household: Couple family household": -10.0,
+        "Lone parent": 43.333333333333336,
+        "One-person household: Other": -25.0,
+        "Other": 3.3333333333333335,
+        "Couple with dependent children": 23.333333333333332,
+        "Single family household: Lone parent household": -25.0,
+        "Couple": 13.333333333333334,
+        "One-person aged 66+ years": 16.666666666666664,
+        "One-person household: Aged 66 years and over": -30.0,
+        "Single family household: Couple family household: Dependent children": -10.0
+      },
+      "fit_metrics": {
+        "jensen_shannon_divergence": 0.8325546111576977,
+        "total_variation_distance": 1.0,
+        "chi_squared": 66.0
+      }
+    },
+    "ukageclassifier_uk_census": {
+      "target_distribution": {
+        "0-9": 12.0,
+        "10-19": 11.5,
+        "20-29": 14.0,
+        "30-39": 15.5,
+        "40-49": 13.0,
+        "50-59": 12.5,
+        "60-69": 11.0,
+        "70-79": 7.5,
+        "80+": 3.0
+      },
+      "observed_distribution": {
+        "30-39": 36.36,
+        "0-9": 22.73,
+        "60-69": 21.21,
+        "20-29": 7.58,
+        "40-49": 6.06,
+        "10-19": 3.03,
+        "70-79": 3.03,
+        "50-59": 0.0,
+        "80+": 0.0
+      },
+      "differences": {
+        "20-29": -6.42,
+        "80+": -3.0,
+        "0-9": 10.73,
+        "60-69": 10.21,
+        "10-19": -8.47,
+        "40-49": -6.94,
+        "70-79": -4.470000000000001,
+        "30-39": 20.86,
+        "50-59": -12.5
+      },
+      "fit_metrics": {
+        "jensen_shannon_divergence": 0.34832268607402816,
+        "total_variation_distance": 0.41800000000000004,
+        "chi_squared": 51.609391209532546
+      }
+    },
+    "uksexclassifier_uk_census": {
+      "target_distribution": {
+        "Male": 49.0,
+        "Female": 51.0
+      },
+      "observed_distribution": {
+        "Female": 59.09,
+        "Male": 40.91
+      },
+      "differences": {
+        "Male": -8.090000000000003,
+        "Female": 8.090000000000003
+      },
+      "fit_metrics": {
+        "jensen_shannon_divergence": 0.057531448226839504,
+        "total_variation_distance": 0.0809,
+        "chi_squared": 1.7285212484993981
+      }
+    }
+  },
+  "format_version": "2.0",
+  "description": "Metadata and analysis for generated population data (population data stored separately in CSV format)",
+  "detailed_failure_records": [
+    {
+      "prompt_hash": "3bac86995c5a810e",
+      "total_attempts": 1,
+      "final_success": true,
+      "attempts": [],
+      "first_attempt_timestamp": "2025-09-27T16:49:03.149101",
+      "final_attempt_timestamp": "2025-09-27T16:49:03.922975",
+      "total_time_ms": 772.4945545196533
+    },
+    {
+      "prompt_hash": "3bac86995c5a810e",
+      "total_attempts": 1,
+      "final_success": true,
+      "attempts": [],
+      "first_attempt_timestamp": "2025-09-27T16:49:03.923065",
+      "final_attempt_timestamp": "2025-09-27T16:49:04.322146",
+      "total_time_ms": 398.2045650482178
+    },
+    {
+      "prompt_hash": "3bac86995c5a810e",
+      "total_attempts": 1,
+      "final_success": true,
+      "attempts": [],
+      "first_attempt_timestamp": "2025-09-27T16:49:04.322206",
+      "final_attempt_timestamp": "2025-09-27T16:49:04.742258",
+      "total_time_ms": 419.43860054016113
+    },
+    {
+      "prompt_hash": "3bac86995c5a810e",
+      "total_attempts": 1,
+      "final_success": true,
+      "attempts": [],
+      "first_attempt_timestamp": "2025-09-27T16:49:04.742309",
+      "final_attempt_timestamp": "2025-09-27T16:49:05.274604",
+      "total_time_ms": 530.8032035827637
+    },
+    {
+      "prompt_hash": "3bac86995c5a810e",
+      "total_attempts": 1,
+      "final_success": true,
+      "attempts": [],
+      "first_attempt_timestamp": "2025-09-27T16:49:05.274691",
+      "final_attempt_timestamp": "2025-09-27T16:49:05.950347",
+      "total_time_ms": 674.4372844696045
+    },
+    {
+      "prompt_hash": "3bac86995c5a810e",
+      "total_attempts": 1,
+      "final_success": true,
+      "attempts": [],
+      "first_attempt_timestamp": "2025-09-27T16:49:05.950414",
+      "final_attempt_timestamp": "2025-09-27T16:49:06.541852",
+      "total_time_ms": 590.2514457702637
+    },
+    {
+      "prompt_hash": "3bac86995c5a810e",
+      "total_attempts": 1,
+      "final_success": true,
+      "attempts": [],
+      "first_attempt_timestamp": "2025-09-27T16:49:06.541926",
+      "final_attempt_timestamp": "2025-09-27T16:49:07.727422",
+      "total_time_ms": 1184.7381591796875
+    },
+    {
+      "prompt_hash": "3bac86995c5a810e",
+      "total_attempts": 1,
+      "final_success": true,
+      "attempts": [],
+      "first_attempt_timestamp": "2025-09-27T16:49:07.727477",
+      "final_attempt_timestamp": "2025-09-27T16:49:09.117503",
+      "total_time_ms": 1388.7932300567627
+    },
+    {
+      "prompt_hash": "3bac86995c5a810e",
+      "total_attempts": 1,
+      "final_success": true,
+      "attempts": [],
+      "first_attempt_timestamp": "2025-09-27T16:49:09.117588",
+      "final_attempt_timestamp": "2025-09-27T16:49:09.874359",
+      "total_time_ms": 755.4528713226318
+    },
+    {
+      "prompt_hash": "3bac86995c5a810e",
+      "total_attempts": 1,
+      "final_success": true,
+      "attempts": [],
+      "first_attempt_timestamp": "2025-09-27T16:49:09.874431",
+      "final_attempt_timestamp": "2025-09-27T16:49:10.628071",
+      "total_time_ms": 752.4051666259766
+    },
+    {
+      "prompt_hash": "dc42ea7c0609ce64",
+      "total_attempts": 1,
+      "final_success": true,
+      "attempts": [],
+      "first_attempt_timestamp": "2025-09-27T16:49:10.810717",
+      "final_attempt_timestamp": "2025-09-27T16:49:11.318476",
+      "total_time_ms": 507.0950984954834
+    },
+    {
+      "prompt_hash": "dc42ea7c0609ce64",
+      "total_attempts": 1,
+      "final_success": true,
+      "attempts": [],
+      "first_attempt_timestamp": "2025-09-27T16:49:11.318526",
+      "final_attempt_timestamp": "2025-09-27T16:49:11.983540",
+      "total_time_ms": 664.3638610839844
+    },
+    {
+      "prompt_hash": "dc42ea7c0609ce64",
+      "total_attempts": 1,
+      "final_success": true,
+      "attempts": [],
+      "first_attempt_timestamp": "2025-09-27T16:49:11.983604",
+      "final_attempt_timestamp": "2025-09-27T16:49:12.716415",
+      "total_time_ms": 731.7516803741455
+    },
+    {
+      "prompt_hash": "dc42ea7c0609ce64",
+      "total_attempts": 1,
+      "final_success": true,
+      "attempts": [],
+      "first_attempt_timestamp": "2025-09-27T16:49:12.716485",
+      "final_attempt_timestamp": "2025-09-27T16:49:13.440470",
+      "total_time_ms": 722.7182388305664
+    },
+    {
+      "prompt_hash": "dc42ea7c0609ce64",
+      "total_attempts": 1,
+      "final_success": true,
+      "attempts": [],
+      "first_attempt_timestamp": "2025-09-27T16:49:13.440542",
+      "final_attempt_timestamp": "2025-09-27T16:49:14.199389",
+      "total_time_ms": 757.6098442077637
+    },
+    {
+      "prompt_hash": "dc42ea7c0609ce64",
+      "total_attempts": 1,
+      "final_success": true,
+      "attempts": [],
+      "first_attempt_timestamp": "2025-09-27T16:49:14.199461",
+      "final_attempt_timestamp": "2025-09-27T16:49:14.982311",
+      "total_time_ms": 781.6193103790283
+    },
+    {
+      "prompt_hash": "dc42ea7c0609ce64",
+      "total_attempts": 1,
+      "final_success": true,
+      "attempts": [],
+      "first_attempt_timestamp": "2025-09-27T16:49:14.982394",
+      "final_attempt_timestamp": "2025-09-27T16:49:16.022133",
+      "total_time_ms": 1039.0982627868652
+    },
+    {
+      "prompt_hash": "dc42ea7c0609ce64",
+      "total_attempts": 1,
+      "final_success": true,
+      "attempts": [],
+      "first_attempt_timestamp": "2025-09-27T16:49:16.022182",
+      "final_attempt_timestamp": "2025-09-27T16:49:17.293016",
+      "total_time_ms": 1269.6685791015625
+    },
+    {
+      "prompt_hash": "dc42ea7c0609ce64",
+      "total_attempts": 1,
+      "final_success": true,
+      "attempts": [],
+      "first_attempt_timestamp": "2025-09-27T16:49:17.293093",
+      "final_attempt_timestamp": "2025-09-27T16:49:18.042743",
+      "total_time_ms": 748.4283447265625
+    },
+    {
+      "prompt_hash": "dc42ea7c0609ce64",
+      "total_attempts": 1,
+      "final_success": true,
+      "attempts": [],
+      "first_attempt_timestamp": "2025-09-27T16:49:18.042820",
+      "final_attempt_timestamp": "2025-09-27T16:49:18.791250",
+      "total_time_ms": 747.1706867218018
+    },
+    {
+      "prompt_hash": "110d234414935e06",
+      "total_attempts": 1,
+      "final_success": true,
+      "attempts": [],
+      "first_attempt_timestamp": "2025-09-27T16:49:18.817447",
+      "final_attempt_timestamp": "2025-09-27T16:49:19.408865",
+      "total_time_ms": 590.754508972168
+    },
+    {
+      "prompt_hash": "110d234414935e06",
+      "total_attempts": 1,
+      "final_success": true,
+      "attempts": [],
+      "first_attempt_timestamp": "2025-09-27T16:49:19.408922",
+      "final_attempt_timestamp": "2025-09-27T16:49:19.976898",
+      "total_time_ms": 567.2752857208252
+    },
+    {
+      "prompt_hash": "110d234414935e06",
+      "total_attempts": 1,
+      "final_success": true,
+      "attempts": [],
+      "first_attempt_timestamp": "2025-09-27T16:49:19.976955",
+      "final_attempt_timestamp": "2025-09-27T16:49:20.546860",
+      "total_time_ms": 568.7360763549805
+    },
+    {
+      "prompt_hash": "110d234414935e06",
+      "total_attempts": 1,
+      "final_success": true,
+      "attempts": [],
+      "first_attempt_timestamp": "2025-09-27T16:49:20.546931",
+      "final_attempt_timestamp": "2025-09-27T16:49:21.047289",
+      "total_time_ms": 499.57776069641113
+    },
+    {
+      "prompt_hash": "110d234414935e06",
+      "total_attempts": 1,
+      "final_success": true,
+      "attempts": [],
+      "first_attempt_timestamp": "2025-09-27T16:49:21.047346",
+      "final_attempt_timestamp": "2025-09-27T16:49:21.724476",
+      "total_time_ms": 675.9188175201416
+    },
+    {
+      "prompt_hash": "110d234414935e06",
+      "total_attempts": 1,
+      "final_success": true,
+      "attempts": [],
+      "first_attempt_timestamp": "2025-09-27T16:49:21.724555",
+      "final_attempt_timestamp": "2025-09-27T16:49:22.268491",
+      "total_time_ms": 543.2050228118896
+    },
+    {
+      "prompt_hash": "110d234414935e06",
+      "total_attempts": 1,
+      "final_success": true,
+      "attempts": [],
+      "first_attempt_timestamp": "2025-09-27T16:49:22.268558",
+      "final_attempt_timestamp": "2025-09-27T16:49:22.895125",
+      "total_time_ms": 625.3759860992432
+    },
+    {
+      "prompt_hash": "110d234414935e06",
+      "total_attempts": 1,
+      "final_success": true,
+      "attempts": [],
+      "first_attempt_timestamp": "2025-09-27T16:49:22.895200",
+      "final_attempt_timestamp": "2025-09-27T16:49:23.523508",
+      "total_time_ms": 627.138614654541
+    },
+    {
+      "prompt_hash": "110d234414935e06",
+      "total_attempts": 1,
+      "final_success": true,
+      "attempts": [],
+      "first_attempt_timestamp": "2025-09-27T16:49:23.523596",
+      "final_attempt_timestamp": "2025-09-27T16:49:24.084217",
+      "total_time_ms": 559.4470500946045
+    },
+    {
+      "prompt_hash": "110d234414935e06",
+      "total_attempts": 1,
+      "final_success": true,
+      "attempts": [],
+      "first_attempt_timestamp": "2025-09-27T16:49:24.084287",
+      "final_attempt_timestamp": "2025-09-27T16:49:24.651092",
+      "total_time_ms": 565.648078918457
+    }
+  ]
 }

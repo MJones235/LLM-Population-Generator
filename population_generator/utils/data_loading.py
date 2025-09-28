@@ -120,6 +120,23 @@ class DataLoader:
                 return col
         return None
     
+    def get_metadata(self, file_path: Union[str, Path]) -> Dict[str, str]:
+        """Get metadata for a data file.
+        
+        Args:
+            file_path: Path to data file
+            
+        Returns:
+            Dictionary with metadata information
+        """
+        file_path = Path(file_path)
+        
+        return {
+            'name': file_path.stem.replace('_', ' ').title(),
+            'source': f"CSV file: {file_path.name}",
+            'description': f"Target distribution data from {file_path.name}"
+        }
+    
     def clear_cache(self):
         """Clear the data cache."""
         self._cache.clear()

@@ -78,7 +78,6 @@ class PopulationGenerator:
         custom_validator: Optional[CustomValidator] = None,
         batch_size: Optional[int] = None,
         n_run: int = 1,
-        target_data_files: Optional[List[str]] = None
     ) -> List[Dict[str, Any]]:
         """Generate synthetic households using LLM with automatic statistics feedback.
         
@@ -146,9 +145,6 @@ class PopulationGenerator:
                     if isinstance(household, dict) and 'household' in household:
                         # Format: {"household": [person1, person2, ...]}
                         people = household['household']
-                    elif isinstance(household, list):
-                        # Format: [person1, person2, ...]
-                        people = household
                     else:
                         # Skip invalid household format
                         continue
@@ -233,13 +229,13 @@ class PopulationGenerator:
         data_sources: Optional[List[str]] = None,
         target_data_files: Optional[List[str]] = None,
         include_analysis: bool = True,
-        format_type: str = "json",
         llm_model: Optional[Any] = None
     ) -> Dict[str, str]:
         """Save population data with comprehensive metadata.
         
         This is a convenience method that creates a PopulationDataSaver and saves
         the generated population data with detailed metadata for future analysis.
+        Population data is saved in CSV format and metadata in JSON format.
         
         Args:
             households: Generated household data
@@ -250,11 +246,10 @@ class PopulationGenerator:
             data_sources: List of data sources used for generation
             target_data_files: List of target data files used
             include_analysis: Whether to include statistical analysis
-            format_type: Output format ('json', 'json_and_csv', 'csv')
             llm_model: LLM model instance for extracting failure statistics
             
         Returns:
-            Dictionary with paths to saved files
+            Dictionary with paths to saved files (population_csv and metadata_json)
         """
         saver = PopulationDataSaver(output_dir)
         
@@ -268,6 +263,5 @@ class PopulationGenerator:
             token_analyzer=self.token_analyzer,
             target_data_files=target_data_files,
             include_analysis=include_analysis,
-            format_type=format_type,
             llm_model=llm_model
         )

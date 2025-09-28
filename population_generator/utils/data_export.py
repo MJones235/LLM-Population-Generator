@@ -1,13 +1,11 @@
 """
 Data export utilities for saving generated population data with comprehensive metadata.
 
-This module provides functionality to save generated population data in a structured format
-that includes:
-- Generated household/population data
-- Generation metadata (parameters, timestamps, etc.)
-- Statistical summaries and comparisons
-- Target data and source information
-- Cost tracking information (if available)
+This module provides streamlined functionality to save generated population data:
+- Population data is saved in CSV format for easy analysis and import
+- Metadata, statistics, and analysis are saved in JSON format
+- No data duplication across files
+- Simplified interface with no format choices
 
 The saved data is designed for future analysis and reproducibility.
 """
@@ -71,10 +69,12 @@ class PopulationDataSaver:
         token_analyzer: Optional[TokenAnalyzer] = None,
         target_data_files: Optional[List[str]] = None,
         include_analysis: bool = True,
-        format_type: str = "json",
         llm_model: Optional[Any] = None
     ) -> Dict[str, str]:
-        """Save population data with comprehensive metadata.
+        """Save population data in streamlined format.
+        
+        Population data is saved in CSV format for easy analysis.
+        Metadata, statistics, and other information is saved in JSON format.
         
         Args:
             households: Generated household data
@@ -86,7 +86,6 @@ class PopulationDataSaver:
             token_analyzer: TokenAnalyzer instance for cost information
             target_data_files: List of target data files used
             include_analysis: Whether to include statistical analysis
-            format_type: Output format ('json', 'json_and_csv', 'csv')
             llm_model: LLM model instance for extracting failure statistics
             
         Returns:
@@ -129,16 +128,17 @@ class PopulationDataSaver:
             detailed_failure_records=detailed_failure_records
         )
         
-        # Save in requested formats
+        # Save population data in CSV and metadata in JSON
         saved_files = {}
         
-        if format_type in ["json", "json_and_csv"]:
-            json_path = self._save_json_format(export_package, output_name)
-            saved_files["json"] = str(json_path)
+        # Save population data as CSV
+        csv_path = self._save_population_csv(export_package, output_name)
+        if csv_path:
+            saved_files["population_csv"] = str(csv_path)
         
-        if format_type in ["csv", "json_and_csv"]:
-            csv_paths = self._save_csv_format(export_package, output_name)
-            saved_files.update(csv_paths)
+        # Save metadata and analysis in JSON
+        metadata_path = self._save_metadata_json(export_package, output_name)
+        saved_files["metadata_json"] = str(metadata_path)
         
         return saved_files
     
@@ -227,9 +227,6 @@ class PopulationDataSaver:
             if isinstance(household, dict) and 'household' in household:
                 # Format: {"household": [person1, person2, ...]}
                 people = household['household']
-            elif isinstance(household, list):
-                # Format: [person1, person2, ...]
-                people = household
             else:
                 # Skip invalid household format
                 continue
@@ -284,140 +281,103 @@ class PopulationDataSaver:
         
         return statistical_analysis, target_comparisons
     
-    def _save_json_format(self, export_package: PopulationExport, output_name: str) -> Path:
-        """Save data in comprehensive JSON format."""
-        output_path = self.output_base_dir / f"{output_name}.json"
+    def _save_metadata_json(self, export_package: PopulationExport, output_name: str) -> Path:
+        """Save metadata and analysis in JSON format (without duplicating population data)."""
+        output_path = self.output_base_dir / f"{output_name}_metadata.json"
         
-        # Convert to serializable format
-        export_dict = {
-            "metadata": asdict(export_package.metadata),
-            "households": export_package.households,
-            "statistical_analysis": export_package.statistical_analysis,
-            "target_comparisons": export_package.target_comparisons,
-            "format_version": "1.0",
-            "description": "Generated population data with comprehensive metadata for analysis"
-        }
-        
-        # Include detailed failure records if available
-        if export_package.detailed_failure_records:
-            export_dict["detailed_failure_records"] = export_package.detailed_failure_records
-        
-        with open(output_path, 'w', encoding='utf-8') as f:
-            json.dump(export_dict, f, indent=2, ensure_ascii=False)
-        
-        return output_path
-    
-    def _save_csv_format(self, export_package: PopulationExport, output_name: str) -> Dict[str, str]:
-        """Save data in CSV format with separate metadata file."""
-        saved_files = {}
-        
-        # Save household data as CSV
-        if export_package.households:
-            # Flatten household data to individual records
-            people_data = []
-            for household_idx, household in enumerate(export_package.households):
-                # Handle both data formats: direct arrays and {"household": [...]} objects
-                if isinstance(household, dict) and 'household' in household:
-                    # Format: {"household": [person1, person2, ...]}
-                    people = household['household']
-                elif isinstance(household, list):
-                    # Format: [person1, person2, ...]
-                    people = household
-                else:
-                    # Skip invalid household format
-                    continue
-                
-                for person in people:
-                    if isinstance(person, dict):
-                        record = dict(**person, household_id=household_idx)
-                        people_data.append(record)
-            
-            if people_data:
-                df = pd.DataFrame(people_data)
-                households_csv = self.output_base_dir / f"{output_name}_households.csv"
-                df.to_csv(households_csv, index=False)
-                saved_files["households_csv"] = str(households_csv)
-        
-        # Save metadata as JSON
-        metadata_json = self.output_base_dir / f"{output_name}_metadata.json"
+        # Convert to serializable format - exclude raw household data to avoid duplication
         metadata_dict = {
             "metadata": asdict(export_package.metadata),
             "statistical_analysis": export_package.statistical_analysis,
             "target_comparisons": export_package.target_comparisons,
-            "format_version": "1.0"
+            "format_version": "2.0",
+            "description": "Metadata and analysis for generated population data (population data stored separately in CSV format)"
         }
         
-        with open(metadata_json, 'w', encoding='utf-8') as f:
+        # Include detailed failure records if available
+        if export_package.detailed_failure_records:
+            metadata_dict["detailed_failure_records"] = export_package.detailed_failure_records
+        
+        with open(output_path, 'w', encoding='utf-8') as f:
             json.dump(metadata_dict, f, indent=2, ensure_ascii=False)
-        saved_files["metadata_json"] = str(metadata_json)
         
-        # Save statistical analysis as CSV if available
-        if export_package.statistical_analysis:
-            try:
-                stats_data = []
-                fit_metrics_data = []
-                
-                for stat_name, stat_data in export_package.statistical_analysis.items():
-                    # Skip the overall fit summary from regular stats
-                    if stat_name == "_overall_fit_summary":
-                        continue
-                        
-                    if "observed_distribution" in stat_data:
-                        for category, value in stat_data["observed_distribution"].items():
-                            stats_data.append({
-                                "statistic": stat_name,
-                                "category": category,
-                                "observed_percentage": value,
-                                "sample_size": stat_data.get("sample_size", 0)
-                            })
-                    
-                    # Extract fit metrics for separate CSV
-                    if "fit_metrics" in stat_data:
-                        fit_record = {"statistic": stat_name}
-                        fit_record.update(stat_data["fit_metrics"])
-                        fit_record["sample_size"] = stat_data.get("sample_size", 0)
-                        fit_metrics_data.append(fit_record)
-                
-                # Save main statistics CSV
-                if stats_data:
-                    stats_df = pd.DataFrame(stats_data)
-                    stats_csv = self.output_base_dir / f"{output_name}_statistics.csv"
-                    stats_df.to_csv(stats_csv, index=False)
-                    saved_files["statistics_csv"] = str(stats_csv)
-                
-                # Save fit metrics CSV
-                if fit_metrics_data:
-                    fit_df = pd.DataFrame(fit_metrics_data)
-                    fit_csv = self.output_base_dir / f"{output_name}_fit_metrics.csv"
-                    fit_df.to_csv(fit_csv, index=False)
-                    saved_files["fit_metrics_csv"] = str(fit_csv)
-                    
-            except Exception as e:
-                print(f"Warning: Could not save statistics as CSV: {e}")
-        
-        return saved_files
+        return output_path
     
-    def load_population_data(self, file_path: Union[str, Path]) -> PopulationExport:
+    def _save_population_csv(self, export_package: PopulationExport, output_name: str) -> Optional[Path]:
+        """Save population data in CSV format."""
+        if not export_package.households:
+            return None
+            
+        # Flatten household data to individual records
+        people_data = []
+        for household_idx, household in enumerate(export_package.households):
+            # Handle both data formats: direct arrays and {"household": [...]} objects
+            if isinstance(household, dict) and 'household' in household:
+                # Format: {"household": [person1, person2, ...]}
+                people = household['household']
+            else:
+                # Skip invalid household format
+                continue
+            
+            for person in people:
+                if isinstance(person, dict):
+                    record = dict(**person, household_id=household_idx)
+                    people_data.append(record)
+        
+        if not people_data:
+            return None
+            
+        df = pd.DataFrame(people_data)
+        output_path = self.output_base_dir / f"{output_name}.csv"
+        df.to_csv(output_path, index=False)
+        
+        return output_path
+    
+    def load_population_data(self, metadata_path: Union[str, Path], 
+                           csv_path: Optional[Union[str, Path]] = None) -> PopulationExport:
         """Load previously saved population data.
         
         Args:
-            file_path: Path to the JSON file containing population data
+            metadata_path: Path to the JSON metadata file
+            csv_path: Path to the CSV population data file. If None, will try to infer from metadata_path
             
         Returns:
             PopulationExport object with loaded data
         """
-        file_path = Path(file_path)
+        metadata_path = Path(metadata_path)
         
-        with open(file_path, 'r', encoding='utf-8') as f:
+        # Load metadata
+        with open(metadata_path, 'r', encoding='utf-8') as f:
             data = json.load(f)
         
         metadata = GenerationMetadata(**data["metadata"])
         
+        # Load population data from CSV if available
+        households = []
+        if csv_path:
+            csv_path = Path(csv_path)
+        else:
+            # Try to infer CSV path from metadata path
+            if metadata_path.name.endswith('_metadata.json'):
+                csv_name = metadata_path.name.replace('_metadata.json', '.csv')
+                csv_path = metadata_path.parent / csv_name
+            else:
+                csv_path = metadata_path.parent / f"{metadata_path.stem}.csv"
+        
+        if csv_path and csv_path.exists():
+            # Load CSV and convert back to household format
+            df = pd.read_csv(csv_path)
+            household_groups = df.groupby('household_id')
+            for household_id, group in household_groups:
+                household_people = group.drop('household_id', axis=1).to_dict('records')
+                households.append({"household": household_people})
+        
         return PopulationExport(
             metadata=metadata,
-            households=data["households"],
+            households=households,
             statistical_analysis=data.get("statistical_analysis"),
-            target_comparisons=data.get("target_comparisons")
+            target_comparisons=data.get("target_comparisons"),
+            detailed_failure_records=data.get("detailed_failure_records")
         )
 
 
@@ -431,6 +391,8 @@ def save_generation_results(
 ) -> Dict[str, str]:
     """Convenience function to save population generation results.
     
+    Population data is saved in CSV format and metadata in JSON format.
+    
     Args:
         households: Generated household data
         model_info: Information about the LLM used
@@ -440,7 +402,7 @@ def save_generation_results(
         **kwargs: Additional arguments passed to PopulationDataSaver.save_population_data
         
     Returns:
-        Dictionary with paths to saved files
+        Dictionary with paths to saved files (population_csv and metadata_json)
     """
     saver = PopulationDataSaver(output_dir)
     return saver.save_population_data(
@@ -450,3 +412,7 @@ def save_generation_results(
         output_name=output_name,
         **kwargs
     )
+
+
+# Alias for cleaner naming
+save_population = save_generation_results

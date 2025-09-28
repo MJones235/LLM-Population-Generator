@@ -31,7 +31,7 @@ class StatisticFormatter:
     
     def _format_distribution(self, distribution: Dict[str, float], label: str) -> str:
         """Format a single distribution."""
-        items = [f"{k}: {v}%" for k, v in distribution.items()]
+        items = [f"{k}: {v:.1f}%" for k, v in distribution.items()]
         return f"{label} Distribution: {', '.join(items)}"
     
     def _format_comparison(self, observed: Dict[str, float], target: Dict[str, float], 

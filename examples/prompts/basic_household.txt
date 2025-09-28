@@ -4,7 +4,7 @@ Your goal is to add one new household to a growing dataset, so that the generate
 
 ---
 
-CURRENT VS TARGET STATISTICS:
+DISTRIBUTIONS (TARGET & CURRENT VS TARGET):
 
 Household Size Distribution:
 {HOUSEHOLD_SIZE_STATS}
@@ -21,9 +21,11 @@ Gender Distribution:
 ---
 
 INSTRUCTIONS:
-1. Review the current and target distributions above for household size, composition, age, and gender.
-2. Select a household size category where the current count is below its target.
-3. Choose a valid household composition for the selected size, prioritizing categories that are currently under-represented.
+1. Review the distributions above for household size, composition, age, and gender.
+   - For the first household: Use target distributions as guidance
+   - For subsequent households: Prioritize categories marked as "under-represented"
+2. Select a household size category, prioritizing under-represented sizes when current data is available.
+3. Choose a valid household composition for the selected size, prioritizing categories that are under-represented.
     - 1-person: contains a single adult of any age.
     - 2-person: can be either a couple, a lone parent with a child, or unrelated housemates.
     - 3+ person: can be a family (couples or lone parents with children, extended family), or unrelated housemates.

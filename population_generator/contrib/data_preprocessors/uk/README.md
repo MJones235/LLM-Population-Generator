@@ -122,7 +122,7 @@ All preprocessors output data in the standardized format expected by the `DataLo
 
 ```csv
 category,percentage
-0–9,10.8
+0-9,10.8
 10-19,15.6
 20-29,18.2
 30-39,16.4
@@ -157,7 +157,7 @@ population = generator.generate(population_size=1000)
 The preprocessors use category mappings that align with the corresponding classifiers:
 
 ### Age Categories
-- UK Census "Aged 4 years and under" + "Aged 5 to 9 years" → "0–9"  
+- UK Census "Aged 4 years and under" + "Aged 5 to 9 years" → "0-9"  
 - UK Census "Aged 10 to 14 years" + "Aged 15 to 19 years" → "10-19"
 - And so on...
 

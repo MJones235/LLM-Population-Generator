@@ -47,7 +47,6 @@ class OpenAIModel(BaseLLM):
         self.temperature = temperature
         self.top_p = top_p
         self.top_k = top_k  # Stored but not used by Azure OpenAI
-        self.is_local = False
     
     def generate_text(self, prompt: Union[str, List[str]], timeout: int = 30) -> Union[str, List[str]]:
         """Generate text using Azure OpenAI API.
@@ -111,8 +110,6 @@ class OpenAIModel(BaseLLM):
             response = self.client.chat.completions.create(
                 model=self.model_name,  # This should be the deployment name in Azure
                 messages=[{"role": "user", "content": prompt}],
-                temperature=self.temperature,
-                top_p=self.top_p,
                 timeout=timeout
             )
             return response.choices[0].message.content
@@ -125,8 +122,6 @@ class OpenAIModel(BaseLLM):
             response = self.client.chat.completions.create(
                 model=self.model_name,
                 messages=[{"role": "user", "content": prompt}],
-                temperature=self.temperature,
-                top_p=self.top_p,
                 timeout=timeout
             )
             return response
@@ -140,7 +135,4 @@ class OpenAIModel(BaseLLM):
             "model": self.model_name,
             "azure_endpoint": self.azure_endpoint,
             "api_version": self.api_version,
-            "temperature": self.temperature,
-            "top_p": self.top_p,
-            "is_local": self.is_local
         }

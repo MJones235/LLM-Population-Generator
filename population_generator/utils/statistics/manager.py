@@ -112,9 +112,9 @@ class StatisticsManager:
             # Get metadata for logging
             metadata = self.data_manager.get_metadata(file_path)
             if metadata:
-                print(f"Loaded target data: {metadata.name} ({metadata.source})")
-                if metadata.description:
-                    print(f"  Description: {metadata.description}")
+                print(f"Loaded target data: {metadata['name']} ({metadata['source']})")
+                if metadata.get('description'):
+                    print(f"  Description: {metadata['description']}")
             
             return data
             
@@ -167,13 +167,24 @@ class StatisticsManager:
         Returns:
             Prompt with placeholders replaced
         """
+        # For first batch or empty data, show target distributions only
         if synthetic_df is None or len(synthetic_df) == 0:
-            # For first batch, remove placeholders or replace with empty string
-            for placeholder in self.placeholder_mappings.keys():
-                prompt = prompt.replace(f"{{{placeholder}}}", "")
+            for placeholder, statistic_name in self.placeholder_mappings.items():
+                if statistic_name in self.providers:
+                    provider = self.providers[statistic_name]
+                    # Get target data from provider if available
+                    if hasattr(provider, 'target_data') and provider.target_data:
+                        target_text = self.formatter._format_distribution(provider.target_data, "Target")
+                        prompt = prompt.replace(f"{{{placeholder}}}", target_text)
+                    else:
+                        # No target data available, remove placeholder
+                        prompt = prompt.replace(f"{{{placeholder}}}", "No target data available")
+                else:
+                    # Remove placeholder if no provider available
+                    prompt = prompt.replace(f"{{{placeholder}}}", "")
             return prompt
-        
-        # Compute all statistics
+
+        # Compute all statistics for subsequent batches
         results = self.compute_all_statistics(synthetic_df, **kwargs)
         
         # Replace each placeholder

@@ -47,10 +47,8 @@ def create_london_validation_rules() -> CustomValidator:
         """Each household must have exactly one person with relationship 'Head'."""
         if isinstance(data, dict) and 'household' in data:
             household_data = data['household']
-        elif isinstance(data, list):
-            household_data = data
         else:
-            return "Data must be either a household object or list of members"
+            return "Data must be a household object"
         
         if not isinstance(household_data, list):
             return "Data must be a list of household members"
@@ -70,10 +68,8 @@ def create_london_validation_rules() -> CustomValidator:
         """No one under 18 should be able to live alone."""
         if isinstance(data, dict) and 'household' in data:
             household_data = data['household']
-        elif isinstance(data, list):
-            household_data = data
         else:
-            return "Data must be either a household object or list of members"
+            return "Data must be a household object"
         
         if not isinstance(household_data, list):
             return "Data must be a list of household members"
@@ -421,7 +417,6 @@ def main():
             target_data_files=target_data_files,
             output_dir=output_dir,
             output_name="uk_population_comprehensive",
-            format_type="json_and_csv",
             include_analysis=True,
             llm_model=llm
         )

@@ -66,7 +66,7 @@ class UKAgeSexPyramidClassifier(IndividualLevelClassifier):
         """
         bins = [0, 10, 20, 30, 40, 50, 60, 70, 80, float("inf")]
         labels = [
-            "0–9",
+            "0-9",
             "10-19", 
             "20-29",
             "30-39",

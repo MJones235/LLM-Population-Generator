@@ -31,7 +31,6 @@ class BaseLLM(ABC):
     including JSON generation and validation.
     """
 
-    is_local: bool = False
     model_name: str
     temperature: float
     
