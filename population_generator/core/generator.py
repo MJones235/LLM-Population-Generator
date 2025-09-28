@@ -251,17 +251,50 @@ class PopulationGenerator:
         Returns:
             Dictionary with paths to saved files (population_csv and metadata_json)
         """
-        saver = PopulationDataSaver(output_dir)
+        from ..utils.data_export import save_generation_results
         
-        return saver.save_population_data(
+        # Extract cost and failure information from token analyzer and LLM
+        kwargs = {}
+        if self.token_analyzer:
+            session_summary = self.get_cost_summary()
+            if not session_summary.get("error") and session_summary.get("estimated_cost"):
+                estimated_cost = session_summary["estimated_cost"]
+                kwargs.update({
+                    'total_cost': estimated_cost.get("total", 0),
+                    'cost_breakdown': {
+                        'input': estimated_cost.get("input", 0),
+                        'output': estimated_cost.get("output", 0)
+                    },
+                    'token_usage': {
+                        'input_tokens': session_summary.get("total_input_tokens", 0),
+                        'output_tokens': session_summary.get("total_output_tokens", 0),
+                        'total_tokens': session_summary.get("total_tokens", 0)
+                    }
+                })
+        
+        if llm_model and hasattr(llm_model, 'failure_tracker'):
+            failure_summary = llm_model.failure_tracker.get_academic_summary()
+            kwargs.update({
+                'total_requests': failure_summary.get("total_attempts", 0),
+                'failed_requests': failure_summary.get("total_failures", 0)
+            })
+        
+        # Extract registered classifiers for statistical analysis
+        classifiers = []
+        statistics_manager = None
+        if hasattr(self.prompt_manager, 'statistics_manager'):
+            statistics_manager = self.prompt_manager.statistics_manager
+            for provider in self.prompt_manager.statistics_manager.providers.values():
+                if hasattr(provider, 'classifier'):
+                    classifiers.append(provider.classifier)
+        
+        return save_generation_results(
             households=households,
             model_info=model_info,
             generation_parameters=generation_parameters,
+            output_dir=output_dir,
             output_name=output_name,
-            data_sources=data_sources or [],
-            statistics_manager=self.prompt_manager.statistics_manager,
-            token_analyzer=self.token_analyzer,
-            target_data_files=target_data_files,
-            include_analysis=include_analysis,
-            llm_model=llm_model
+            classifiers=classifiers if classifiers else None,
+            statistics_manager=statistics_manager,
+            **kwargs
         )
