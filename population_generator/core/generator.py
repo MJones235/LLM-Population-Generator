@@ -226,9 +226,6 @@ class PopulationGenerator:
         generation_parameters: Dict[str, Any],
         output_dir: Union[str, Path],
         output_name: str,
-        data_sources: Optional[List[str]] = None,
-        target_data_files: Optional[List[str]] = None,
-        include_analysis: bool = True,
         llm_model: Optional[Any] = None
     ) -> Dict[str, str]:
         """Save population data with comprehensive metadata.
@@ -243,9 +240,6 @@ class PopulationGenerator:
             generation_parameters: Parameters used for generation (n_households, batch_size, etc.)
             output_dir: Directory to save files
             output_name: Base name for output files (without extension)
-            data_sources: List of data sources used for generation
-            target_data_files: List of target data files used
-            include_analysis: Whether to include statistical analysis
             llm_model: LLM model instance for extracting failure statistics
             
         Returns:

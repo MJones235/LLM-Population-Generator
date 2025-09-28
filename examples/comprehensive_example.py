@@ -395,29 +395,13 @@ def main():
     
     try:
         # Save comprehensive data
-        data_sources = [
-            "UK Census 2021 - Household size distribution",
-            "UK Census 2021 - Household composition",
-            "UK Census 2021 - Age distribution", 
-            "UK Census 2021 - Sex distribution"
-        ]
-        
-        target_data_files = [
-            "examples/data/targets/uk_household_size.csv",
-            "examples/data/targets/uk_household_composition.csv", 
-            "examples/data/targets/uk_age_distribution.csv",
-            "examples/data/targets/uk_sex_distribution.csv"
-        ]
         
         saved_files = generator.save_population_data(
             households=households,
             model_info=model_info,
             generation_parameters=generation_parameters,
-            data_sources=data_sources,
-            target_data_files=target_data_files,
             output_dir=output_dir,
             output_name="uk_population_comprehensive",
-            include_analysis=True,
             llm_model=llm
         )
         
