@@ -32,12 +32,12 @@ from population_generator.contrib.classifiers.uk import (
 )
 
 # Utilities
-from population_generator.utils import create_pricing_config
-from population_generator.utils.validation import (
+from population_generator.analysis.costs import create_pricing_config
+from population_generator.data.validation import (
     CustomValidator,
-    FunctionValidationRule,
-    create_custom_validator_for_households
+    FunctionValidationRule
 )
+from population_generator.contrib.classifiers.standard import create_custom_validator_for_households
 
 
 def create_london_validation_rules() -> CustomValidator:
@@ -186,10 +186,10 @@ def main():
     try:
         # Register all UK classifiers with their target data
         classifiers = [
-            ("HOUSEHOLD_SIZE_STATS", UKHouseholdSizeClassifier(), "targets/uk_household_size.csv"),
-            ("HOUSEHOLD_COMPOSITION_STATS", UKHouseholdCompositionClassifier(), "targets/uk_household_composition.csv"),
-            ("AGE_STATS", UKAgeClassifier(), "targets/uk_age_distribution.csv"),
-            ("SEX_STATS", UKSexClassifier(), "targets/uk_sex_distribution.csv")
+            ("HOUSEHOLD_SIZE_STATS", UKHouseholdSizeClassifier(), "targets/household_size.csv"),
+            ("HOUSEHOLD_COMPOSITION_STATS", UKHouseholdCompositionClassifier(), "targets/household_composition.csv"),
+            ("AGE_STATS", UKAgeClassifier(), "targets/age.csv"),
+            ("SEX_STATS", UKSexClassifier(), "targets/sex.csv")
         ]
         
         for placeholder, classifier, target_file in classifiers:

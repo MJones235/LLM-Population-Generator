@@ -6,9 +6,9 @@ from typing import Any, Callable, Optional, Dict, List
 import pandas as pd
 from pathlib import Path
 
-from ..core.config import Config
+from ..engine.config import Config
 from ..classifiers.base import DemographicClassifier
-from .statistics import StatisticsManager
+from ..analysis.statistics import StatisticsManager
 
 
 class PromptManager:

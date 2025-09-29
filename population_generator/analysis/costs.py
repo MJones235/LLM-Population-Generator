@@ -123,15 +123,15 @@ class TokenAnalyzer:
             "total_output_tokens": int(total_output),
             "total_tokens": int(total_input + total_output),
             "estimated_cost": {
-                "total": round(total_cost, 4),
-                "input": round(sum(record["cost"].input_cost for record in self.session_data), 4),
-                "output": round(sum(record["cost"].output_cost for record in self.session_data), 4),
+                "total": round(total_cost, 6),  # Increased precision for small costs
+                "input": round(sum(record["cost"].input_cost for record in self.session_data), 6),
+                "output": round(sum(record["cost"].output_cost for record in self.session_data), 6),
                 "currency": "GBP"
             },
             "averages": {
                 "input_tokens_per_request": round(total_input / len(df), 1),
                 "output_tokens_per_request": round(total_output / len(df), 1),
-                "cost_per_request": round(total_cost / len(df), 4)
+                "cost_per_request": round(total_cost / len(df), 6)  # Increased precision
             },
             "by_prompt_type": df.groupby("prompt_type").agg({
                 "input_tokens": ["sum", "mean"],

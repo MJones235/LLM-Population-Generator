@@ -10,7 +10,7 @@ from .fit_metrics import DistributionalFitCalculator
 from .formatters import StatisticFormatter
 from .reporting import FitReporter
 from ...classifiers.base import DemographicClassifier
-from ..data_loading import DataLoader
+from ...data.loading import DataLoader
 
 
 class StatisticsManager:
@@ -31,18 +31,6 @@ class StatisticsManager:
         self.fit_calculator = DistributionalFitCalculator()
         self.formatter = StatisticFormatter()
         self.reporter = FitReporter()
-        
-        # Default placeholder mappings
-        self._setup_default_mappings()
-    
-    def _setup_default_mappings(self):
-        """Set up default placeholder to statistic mappings."""
-        self.placeholder_mappings.update({
-            "HOUSEHOLD_SIZE_STATS": "household_size_stats",
-            "HOUSEHOLD_COMPOSITION_STATS": "household_composition_stats",
-            "AGE_STATS": "age_stats",
-            "SEX_STATS": "sex_stats"
-        })
     
     def register_classifier(self, placeholder: str, 
                           classifier: DemographicClassifier,
@@ -51,7 +39,7 @@ class StatisticsManager:
         """Register a classifier as a statistic provider.
         
         Args:
-            placeholder: Placeholder name (e.g., "HOUSEHOLD_SIZE_STATS")
+            placeholder: Placeholder name (e.g., "AGE_STATS", "CUSTOM_DEMOGRAPHICS", "年龄统计")
             classifier: The classifier instance
             target_data: Target distribution data
             target_file: Path to file containing target data (relative to data_dir)
@@ -59,6 +47,14 @@ class StatisticsManager:
         # Load target data from file if specified
         if target_file and self.data_dir:
             target_data = self._load_target_data(target_file)
+        
+        # Apply label mapping to target data if available
+        if target_data and classifier.get_label_map():
+            label_map = classifier.get_label_map()
+            target_data = {
+                label_map.get(original_label, original_label): percentage
+                for original_label, percentage in target_data.items()
+            }
         
         provider = ClassifierStatisticProvider(classifier, target_data)
         statistic_name = provider.get_statistic_name()
@@ -73,7 +69,7 @@ class StatisticsManager:
         """Register a custom statistic function.
         
         Args:
-            placeholder: Placeholder name (e.g., "AGE_STATS")
+            placeholder: Placeholder name (e.g., "CUSTOM_STATS", "INCOME_DIST", "지역통계")
             name: Internal name for the statistic
             compute_func: Function to compute the statistic
             target_data: Target distribution data
@@ -174,7 +170,12 @@ class StatisticsManager:
                     provider = self.providers[statistic_name]
                     # Get target data from provider if available
                     if hasattr(provider, 'target_data') and provider.target_data:
-                        target_text = self.formatter._format_distribution(provider.target_data, "Target")
+                        # Get label order from classifier if it's a ClassifierStatisticProvider
+                        label_order = None
+                        if hasattr(provider, 'classifier') and hasattr(provider.classifier, 'get_label_order'):
+                            label_order = provider.classifier.get_label_order()
+                        
+                        target_text = self.formatter._format_distribution(provider.target_data, "Target", label_order)
                         prompt = prompt.replace(f"{{{placeholder}}}", target_text)
                     else:
                         # No target data available, remove placeholder

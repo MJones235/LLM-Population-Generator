@@ -58,29 +58,3 @@ class StandardSexClassifier(IndividualLevelClassifier):
             List of labels in logical order
         """
         return ['Male', 'Female']
-    
-    def compute_observed_distribution(self, synthetic_df: pd.DataFrame, **kwargs) -> Dict[str, float]:
-        """Compute gender distribution from synthetic population data.
-        
-        Args:
-            synthetic_df: DataFrame with synthetic population data
-            **kwargs: Additional parameters (unused)
-            
-        Returns:
-            Dictionary mapping gender categories to percentages
-        """
-        if synthetic_df.empty:
-            return {}
-            
-        gender_counts = synthetic_df['gender'].value_counts()
-        total = len(synthetic_df)
-        
-        # Convert to percentages
-        distribution = {gender: (count / total) * 100 for gender, count in gender_counts.items()}
-        
-        # Ensure all standard categories are represented
-        for category in self.get_standard_categories():
-            if category not in distribution:
-                distribution[category] = 0.0
-                
-        return distribution

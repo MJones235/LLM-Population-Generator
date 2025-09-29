@@ -6,8 +6,8 @@ import json
 import jsonschema
 import time
 
-from ..utils.failure_tracking import GenerationFailureTracker
-from ..utils.validation import CustomValidator, ValidationError
+from ..analysis.failures import GenerationFailureTracker
+from ..data.validation import CustomValidator, ValidationError
 
 
 class TokenUsage(NamedTuple):

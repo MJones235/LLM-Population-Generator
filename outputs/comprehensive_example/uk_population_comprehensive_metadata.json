@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "timestamp": "2025-09-28T15:45:11.461727",
+    "timestamp": "20250929T16:52:58",
     "model_info": {
       "name": "gpt-4o-mini",
       "type": "OpenAI",
@@ -26,185 +26,157 @@
     },
     "data_sources": [],
     "cost_tracking": {
-      "total_calls": 30,
-      "total_tokens": 30071,
-      "total_cost": 0.0054,
-      "average_tokens_per_call": 1002.3666666666667,
-      "cost_per_household": 0.00018
+      "total_cost": 0.005338,
+      "cost_breakdown": {
+        "input": 0.004119,
+        "output": 0.001219
+      },
+      "token_usage": {
+        "input_tokens": 27460,
+        "output_tokens": 2032,
+        "total_tokens": 29492
+      }
     },
     "failure_analysis": {
-      "generation_success_metrics": {
-        "total_prompts": 30,
-        "success_rate": 1.0,
-        "failure_rate": 0.0,
-        "successful_prompts": 30,
-        "failed_prompts": 0
-      },
-      "failure_type_breakdown": {
+      "total_attempts": 30,
+      "total_failures": 0,
+      "failure_breakdown": {
         "json_parsing_errors": 0,
         "schema_validation_errors": 0,
         "custom_validation_errors": 0,
         "timeout_errors": 0,
         "model_errors": 0,
         "total_failure_attempts": 0
-      },
-      "retry_behavior_analysis": {
-        "average_attempts_per_prompt": 1.0,
-        "maximum_attempts_single_prompt": 1,
-        "prompts_requiring_retry": 0,
-        "retry_success_rate": 0.0,
-        "failure_distribution": {
-          "failed_after_1_attempt": 0,
-          "failed_after_2_attempts": 0,
-          "failed_after_3_attempts": 0
-        }
-      },
-      "performance_metrics": {
-        "total_generation_time_seconds": 0.0,
-        "average_time_per_prompt_seconds": 0.0,
-        "average_time_per_successful_prompt_seconds": 0.0,
-        "efficiency_loss_due_to_failures_percent": 0.0
-      },
-      "metadata": {
-        "tracking_session_duration_seconds": 0.0,
-        "data_collection_timestamp": "2025-09-28T15:45:11.461735",
-        "failure_tracking_version": "1.0",
-        "privacy_note": "Prompts are hashed for privacy; raw responses truncated to 500 characters"
       }
     },
-    "run_id": "fafa89a6-952"
+    "run_id": "86ff872e-d1b9-4eed-b453-d8a2fc6a424e"
   },
   "statistical_analysis": {
     "ukhouseholdsizeclassifier_uk_census": {
       "target_distribution": {
-        "1": 30.0,
-        "2": 35.0,
-        "3": 15.0,
-        "4": 12.0,
-        "5": 5.0,
-        "6": 2.0,
-        "7": 1.0
+        "1": 34.22803488684577,
+        "2": 31.91771785955683,
+        "3": 15.262587848237336,
+        "4": 11.343110988053454,
+        "5": 4.30303671913809,
+        "6": 1.8013469384431218,
+        "7": 0.6555534744334145,
+        "8+": 0.4886112852919859
       },
       "observed_distribution": {
-        "1": 13.33,
-        "2": 53.33,
-        "3": 30.0,
-        "4": 3.33,
-        "5": 0.0,
-        "6": 0.0,
-        "7": 0.0,
-        "8": 0.0
+        "2": 73.33333333333333,
+        "3": 26.666666666666668
       },
-      "sample_size": 67,
+      "sample_size": 68,
       "households_analyzed": 30,
       "fit_metrics": {
-        "jensen_shannon_divergence": 0.2819925304864098,
-        "total_variation_distance": 0.33335000000000004,
-        "chi_squared": 32.244903197619045
+        "jensen_shannon_divergence": 0.4824690875618941,
+        "total_variation_distance": 0.5281969429220583,
+        "chi_squared": 78.25478899690025
       },
       "placeholder_used": "HOUSEHOLD_SIZE_STATS"
     },
     "ukhouseholdcompositionclassifier_uk_census": {
       "target_distribution": {
-        "One-person household: Aged 66 years and over": 30.0,
-        "One-person household: Other": 25.0,
-        "Single family household: Lone parent household": 25.0,
-        "Single family household: Couple family household": 10.0,
-        "Single family household: Couple family household: Dependent children": 10.0
+        "One-person aged 66+ years": 12.146260026874058,
+        "One-person aged <66 years": 22.08233234252209,
+        "Other": 16.602467527179446,
+        "Couple with non-dependent children": 5.33735086933507,
+        "Couple with dependent children": 16.63178468178672,
+        "Couple": 15.61464228999552,
+        "Lone parent": 11.585162262307096
       },
       "observed_distribution": {
-        "Lone parent": 60.0,
-        "Couple with dependent children": 20.0,
-        "One-person aged 66+ years": 13.333333333333334,
-        "Couple": 3.3333333333333335,
-        "Other": 3.3333333333333335
+        "Lone parent": 83.33333333333334,
+        "Couple with dependent children": 13.333333333333334,
+        "Couple": 3.3333333333333335
       },
-      "sample_size": 67,
+      "sample_size": 68,
       "households_analyzed": 30,
       "fit_metrics": {
-        "jensen_shannon_divergence": 0.8325546111576977,
-        "total_variation_distance": 1.0,
-        "chi_squared": 67.0
+        "jensen_shannon_divergence": 0.6083295000330906,
+        "total_variation_distance": 0.7174817107102625,
+        "chi_squared": 347.3619242891174
       },
       "placeholder_used": "HOUSEHOLD_COMPOSITION_STATS"
     },
     "ukageclassifier_uk_census": {
       "target_distribution": {
-        "0-9": 12.0,
-        "10-19": 11.5,
-        "20-29": 14.0,
-        "30-39": 15.5,
-        "40-49": 13.0,
-        "50-59": 12.5,
-        "60-69": 11.0,
-        "70-79": 7.5,
-        "80+": 3.0
+        "10-19": 13.247480216576427,
+        "20-29": 20.003331945022907,
+        "30-39": 13.607663473552686,
+        "0-9": 10.780508121615991,
+        "40-49": 10.996751353602663,
+        "50-59": 11.368929612661391,
+        "60-69": 9.386422324031654,
+        "70-79": 6.547605164514786,
+        "80+": 4.061307788421491
       },
       "observed_distribution": {
-        "30-39": 35.82089552238806,
-        "0-9": 26.865671641791046,
-        "60-69": 11.940298507462686,
-        "20-29": 8.955223880597014,
-        "70-79": 5.970149253731343,
-        "10-19": 5.970149253731343,
-        "40-49": 4.477611940298507,
+        "0-9": 38.23529411764706,
+        "30-39": 32.35294117647059,
+        "20-29": 11.76470588235294,
+        "10-19": 7.352941176470589,
+        "60-69": 5.88235294117647,
+        "40-49": 4.411764705882353,
         "50-59": 0.0,
+        "70-79": 0.0,
         "80+": 0.0
       },
-      "sample_size": 67,
+      "sample_size": 68,
       "households_analyzed": 30,
       "fit_metrics": {
-        "jensen_shannon_divergence": 0.3280300563126602,
-        "total_variation_distance": 0.36126865671641795,
-        "chi_squared": 47.57887475471366
+        "jensen_shannon_divergence": 0.3944445205548046,
+        "total_variation_distance": 0.46200063698948957,
+        "chi_squared": 87.7111599881948
       },
       "placeholder_used": "AGE_STATS"
     },
     "uksexclassifier_uk_census": {
       "target_distribution": {
-        "Male": 49.0,
-        "Female": 51.0
+        "Female": 50.57959183673469,
+        "Male": 49.42040816326531
       },
       "observed_distribution": {
-        "Female": 55.223880597014926,
-        "Male": 44.776119402985074
+        "Female": 54.41176470588235,
+        "Male": 45.588235294117645
       },
-      "sample_size": 67,
+      "sample_size": 68,
       "households_analyzed": 30,
       "fit_metrics": {
-        "jensen_shannon_divergence": 0.0299299018262755,
-        "total_variation_distance": 0.04223880597014926,
-        "chi_squared": 0.4783346174290606
+        "jensen_shannon_divergence": 0.027134736048273597,
+        "total_variation_distance": 0.03832172869147657,
+        "chi_squared": 0.39950061122199776
       },
       "placeholder_used": "SEX_STATS"
     },
     "_overall_fit_summary": {
       "num_distributions": 4,
       "distributions_with_targets": 4,
-      "avg_jensen_shannon": 0.3681267749457608,
-      "avg_total_variation": 0.4342143656716418,
-      "worst_jensen_shannon": 0.8325546111576977,
-      "best_jensen_shannon": 0.0299299018262755,
+      "avg_jensen_shannon": 0.3780944610495157,
+      "avg_total_variation": 0.4365002548283217,
+      "worst_jensen_shannon": 0.6083295000330906,
+      "best_jensen_shannon": 0.027134736048273597,
       "distributions_summary": [
         {
           "name": "ukhouseholdsizeclassifier_uk_census",
-          "jensen_shannon": 0.2819925304864098,
-          "total_variation": 0.33335000000000004
+          "jensen_shannon": 0.4824690875618941,
+          "total_variation": 0.5281969429220583
         },
         {
           "name": "ukhouseholdcompositionclassifier_uk_census",
-          "jensen_shannon": 0.8325546111576977,
-          "total_variation": 1.0
+          "jensen_shannon": 0.6083295000330906,
+          "total_variation": 0.7174817107102625
         },
         {
           "name": "ukageclassifier_uk_census",
-          "jensen_shannon": 0.3280300563126602,
-          "total_variation": 0.36126865671641795
+          "jensen_shannon": 0.3944445205548046,
+          "total_variation": 0.46200063698948957
         },
         {
           "name": "uksexclassifier_uk_census",
-          "jensen_shannon": 0.0299299018262755,
-          "total_variation": 0.04223880597014926
+          "jensen_shannon": 0.027134736048273597,
+          "total_variation": 0.03832172869147657
         }
       ]
     }

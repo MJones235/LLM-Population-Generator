@@ -49,12 +49,18 @@ class ClassifierStatisticProvider(StatisticProvider):
         # Use the classifier's compute_observed_distribution method
         observed = self.classifier.compute_observed_distribution(synthetic_df, **kwargs)
         name = f"{self.classifier.__class__.__name__.lower()}_{self.classifier.get_name()}"
+        
+        # Get label order from classifier if available
+        label_order = None
+        if hasattr(self.classifier, 'get_label_order'):
+            label_order = self.classifier.get_label_order()
             
         return StatisticResult(
             name=name,
             observed=observed,
             target=self.target_data,
-            metadata={"classifier_type": type(self.classifier).__name__}
+            metadata={"classifier_type": type(self.classifier).__name__},
+            label_order=label_order
         )
     
     def get_statistic_name(self) -> str:

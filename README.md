@@ -5,6 +5,7 @@ A Python package for generating synthetic population data using Large Language M
 ## Features
 
 - **Multi-LLM Support**: Works with Azure OpenAI (primary), Ollama, and other LLM providers
+- **Progressive Saving**: Automatic checkpointing for large populations to prevent data loss
 - **Failure Tracking & Research Analytics**: Comprehensive failure tracking for academic research on LLM reliability
 - **Customizable Classifiers**: Extensible household size and composition classification systems
 - **Flexible Data Sources**: Support for custom census data and statistical targets
@@ -102,6 +103,48 @@ loaded_data = saver.load_population_data("outputs/london_population_2024.json")
 - Data provenance and source information
 - Unique run identifiers for reproducibility
 - **Detailed failure records for research into LLM reliability patterns**
+
+## Progressive Saving for Large Populations
+
+For large population generation tasks that may take hours or days, the library provides progressive saving to prevent data loss:
+
+```python
+# Generate with automatic checkpointing
+households = generator.generate_households(
+    n_households=100000,  # Large population
+    model=llm,
+    base_prompt=prompt,
+    schema=schema,
+    location="United Kingdom",
+    batch_size=50,
+    enable_progressive_saving=True,      # Enable automatic saving
+    checkpoint_dir="./checkpoints",      # Where to save checkpoints
+    checkpoint_name="uk_population_100k" # Name for this generation
+)
+
+# Resume from checkpoint after interruption
+households = generator.generate_households(
+    # ... same parameters ...
+    enable_progressive_saving=True,
+    checkpoint_dir="./checkpoints",
+    checkpoint_name="uk_population_100k",
+    resume_from_checkpoint=True  # Resume where you left off
+)
+
+# Manage checkpoints
+checkpoints = generator.list_checkpoints("./checkpoints")
+for checkpoint in checkpoints:
+    print(f"{checkpoint['name']}: {checkpoint['progress']} ({checkpoint['progress_percent']:.1f}%)")
+```
+
+**Progressive Saving Features:**
+- Automatic checkpointing after each batch
+- Resume from any checkpoint after interruption
+- Progress tracking and monitoring
+- Multiple checkpoint management
+- Data safety - never lose more than one batch of work
+
+See `PROGRESSIVE_SAVING_GUIDE.md` for detailed documentation and examples.
 
 ## Project Structure
 

@@ -35,14 +35,14 @@ class UKHouseholdSizeClassifier(HouseholdLevelClassifier):
             Dictionary mapping size numbers to descriptive labels
         """
         return {
-            "1": "1 person",
-            "2": "2 people", 
-            "3": "3 people",
-            "4": "4 people",
-            "5": "5 people",
-            "6": "6 people",
-            "7": "7 people",
-            "8": "8+ people"
+            "1": "1",
+            "2": "2", 
+            "3": "3",
+            "4": "4",
+            "5": "5",
+            "6": "6",
+            "7": "7",
+            "8": "8+"
         }
     
     def get_label_order(self) -> list:
@@ -51,27 +51,4 @@ class UKHouseholdSizeClassifier(HouseholdLevelClassifier):
         Returns:
             List of labels in logical order
         """
-        return ["1", "2", "3", "4", "5", "6", "7", "8"]
-
-    def compute_observed_distribution(self, synthetic_df: pd.DataFrame, **kwargs) -> Dict[str, float]:
-        """Compute household size distribution for UK Census categories.
-        
-        Args:
-            synthetic_df: DataFrame with synthetic population data
-            **kwargs: Additional parameters (unused)
-            
-        Returns:
-            Dictionary mapping size categories to percentages
-        """
-        household_sizes = synthetic_df.groupby("household_id").size()
-        
-        # UK Census typically uses size categories 1-8, with 8+ grouped
-        household_sizes = household_sizes.apply(lambda x: x if x <= 8 else 8)
-        size_counts = household_sizes.value_counts().to_dict()
-        total = sum(size_counts.values())
-        
-        # Return as percentages for sizes 1-8
-        return {
-            str(size): round((size_counts.get(size, 0) / total) * 100, 2) if total > 0 else 0.00
-            for size in range(1, 9)
-        }
+        return ["1", "2", "3", "4", "5", "6", "7", "8+"]

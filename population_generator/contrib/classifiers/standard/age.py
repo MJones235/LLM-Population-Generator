@@ -129,4 +129,4 @@ class StandardAgeClassifier(IndividualLevelClassifier):
             Dictionary mapping age bands to descriptive labels
         """
         _, labels = self.get_age_band_labels()
-        return {label: f"Age {label}" for label in labels}
+        return {label: label for label in labels}
