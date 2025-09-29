@@ -8,8 +8,9 @@ This example demonstrates ALL major features of the LLM Population Generator:
 3. Token tracking and cost analysis
 4. Failure tracking and analysis
 5. Custom validation rules
-6. Data export with metadata
-7. Comprehensive statistics and analysis
+6. Progressive saving (checkpoints after each batch)
+7. Data export with metadata
+8. Comprehensive statistics and analysis
 
 This serves as both a complete demonstration and a template for real-world usage.
 """
@@ -246,9 +247,14 @@ def main():
     n_households = 30
     batch_size = 10
     
+    # Create output directory
+    output_dir = Path("./outputs/comprehensive_example")
+    output_dir.mkdir(parents=True, exist_ok=True)
+    
     print(f"Generating {n_households} households for {location}")
     print(f"Using batch size of {batch_size} for statistical feedback")
-    print(f"With custom validation and failure tracking enabled")
+    print(f"With custom validation, failure tracking, and progressive saving enabled")
+    print(f"Checkpoints will be automatically saved to: {output_dir}/checkpoints")
     print()
     
     try:
@@ -260,7 +266,9 @@ def main():
             schema=schema,
             location=location,
             batch_size=batch_size,
-            custom_validator=validator  # Custom validation
+            custom_validator=validator,  # Custom validation
+            enable_progressive_saving=True,  # Enable progressive saving
+            output_dir=output_dir  # Checkpoints automatically saved to output_dir/checkpoints
         )
         
         print(f"🎉 Successfully generated {len(households)} households!")
@@ -368,10 +376,6 @@ def main():
     print("\n💾 STEP 11: Data Export and Persistence")
     print("-" * 38)
     
-    # Create output directory
-    output_dir = Path("./outputs/comprehensive_example")
-    output_dir.mkdir(parents=True, exist_ok=True)
-    
     # Prepare comprehensive metadata
     model_info = {
         "name": llm.model_name,
@@ -390,6 +394,7 @@ def main():
         "failure_tracking_enabled": True,
         "cost_tracking_enabled": True,
         "statistical_feedback_enabled": True,
+        "progressive_saving_enabled": True,
         "classifiers_used": [c[0] for c in classifiers]
     }
     
@@ -448,6 +453,7 @@ def main():
     print("   • Token tracking and cost analysis")
     print("   • Failure tracking and analysis")
     print("   • Custom validation rules")
+    print("   • Progressive saving (checkpoints)")
     print("   • Comprehensive data export")
     print("   • Statistical analysis")
     print()

@@ -90,6 +90,7 @@ class PopulationGenerator:
         batch_size: Optional[int] = None,
         n_run: int = 1,
         enable_progressive_saving: bool = False,
+        output_dir: Optional[Union[str, Path]] = None,
         checkpoint_dir: Optional[Union[str, Path]] = None,
         checkpoint_name: Optional[str] = None,
         resume_from_checkpoint: bool = False,
@@ -106,7 +107,8 @@ class PopulationGenerator:
             batch_size: Number of households per batch
             n_run: Run number for tracking
             enable_progressive_saving: Enable saving after each batch to prevent data loss
-            checkpoint_dir: Directory to save checkpoints (defaults to './checkpoints')
+            output_dir: Output directory for final results (when provided, checkpoints default to output_dir/checkpoints)
+            checkpoint_dir: Directory to save checkpoints (defaults to output_dir/checkpoints if output_dir provided, else './checkpoints')
             checkpoint_name: Name for checkpoint files (defaults to timestamp-based name)
             resume_from_checkpoint: Whether to resume from an existing checkpoint
             
@@ -121,6 +123,16 @@ class PopulationGenerator:
         # Set defaults
         if batch_size is None:
             batch_size = self.config.get("generation.default_batch_size", 10)
+        
+        # Auto-configure checkpoint directory if progressive saving is enabled
+        if enable_progressive_saving and checkpoint_dir is None:
+            if output_dir is not None:
+                # Default to output_dir/checkpoints when output_dir is provided
+                checkpoint_dir = Path(output_dir) / "checkpoints"
+                checkpoint_dir.mkdir(parents=True, exist_ok=True)
+            else:
+                # Fall back to ./checkpoints if no output_dir provided
+                checkpoint_dir = "./checkpoints"
         
         # Initialize session
         session = GenerationSession(

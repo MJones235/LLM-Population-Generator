@@ -1,0 +1,520 @@
+{
+  "timestamp": "2025-09-29T17:31:20.074369",
+  "completed_batches": 3,
+  "total_batches": 3,
+  "households_generated": 30,
+  "target_households": 30,
+  "progress_percent": 100.0,
+  "households": [
+    {
+      "household": [
+        {
+          "age": 34,
+          "gender": "Female",
+          "relationship": "Head"
+        },
+        {
+          "age": 7,
+          "gender": "Male",
+          "relationship": "Child"
+        }
+      ]
+    },
+    {
+      "household": [
+        {
+          "age": 34,
+          "gender": "Female",
+          "relationship": "Head"
+        },
+        {
+          "age": 6,
+          "gender": "Male",
+          "relationship": "Child"
+        },
+        {
+          "age": 3,
+          "gender": "Female",
+          "relationship": "Child"
+        }
+      ]
+    },
+    {
+      "household": [
+        {
+          "age": 32,
+          "gender": "Female",
+          "relationship": "Head"
+        },
+        {
+          "age": 7,
+          "gender": "Male",
+          "relationship": "Child"
+        },
+        {
+          "age": 5,
+          "gender": "Female",
+          "relationship": "Child"
+        }
+      ]
+    },
+    {
+      "household": [
+        {
+          "age": 34,
+          "gender": "Female",
+          "relationship": "Head"
+        },
+        {
+          "age": 8,
+          "gender": "Male",
+          "relationship": "Child"
+        },
+        {
+          "age": 6,
+          "gender": "Female",
+          "relationship": "Child"
+        }
+      ]
+    },
+    {
+      "household": [
+        {
+          "age": 65,
+          "gender": "Female",
+          "relationship": "Head"
+        },
+        {
+          "age": 40,
+          "gender": "Male",
+          "relationship": "Child"
+        }
+      ]
+    },
+    {
+      "household": [
+        {
+          "age": 34,
+          "gender": "Female",
+          "relationship": "Head"
+        },
+        {
+          "age": 3,
+          "gender": "Male",
+          "relationship": "Child"
+        }
+      ]
+    },
+    {
+      "household": [
+        {
+          "age": 34,
+          "gender": "Male",
+          "relationship": "Head"
+        },
+        {
+          "age": 32,
+          "gender": "Female",
+          "relationship": "Spouse"
+        },
+        {
+          "age": 6,
+          "gender": "Male",
+          "relationship": "Child"
+        }
+      ]
+    },
+    {
+      "household": [
+        {
+          "age": 30,
+          "gender": "Female",
+          "relationship": "Head"
+        },
+        {
+          "age": 7,
+          "gender": "Male",
+          "relationship": "Child"
+        }
+      ]
+    },
+    {
+      "household": [
+        {
+          "age": 32,
+          "gender": "Female",
+          "relationship": "Head"
+        },
+        {
+          "age": 8,
+          "gender": "Male",
+          "relationship": "Child"
+        }
+      ]
+    },
+    {
+      "household": [
+        {
+          "age": 34,
+          "gender": "Female",
+          "relationship": "Head"
+        },
+        {
+          "age": 9,
+          "gender": "Male",
+          "relationship": "Child"
+        }
+      ]
+    },
+    {
+      "household": [
+        {
+          "age": 30,
+          "gender": "Female",
+          "relationship": "Head"
+        },
+        {
+          "age": 8,
+          "gender": "Male",
+          "relationship": "Child"
+        }
+      ]
+    },
+    {
+      "household": [
+        {
+          "age": 28,
+          "gender": "Female",
+          "relationship": "Head"
+        },
+        {
+          "age": 3,
+          "gender": "Male",
+          "relationship": "Child"
+        }
+      ]
+    },
+    {
+      "household": [
+        {
+          "age": 32,
+          "gender": "Male",
+          "relationship": "Head"
+        },
+        {
+          "age": 29,
+          "gender": "Female",
+          "relationship": "Spouse"
+        },
+        {
+          "age": 5,
+          "gender": "Male",
+          "relationship": "Child"
+        }
+      ]
+    },
+    {
+      "household": [
+        {
+          "age": 28,
+          "gender": "Male",
+          "relationship": "Head"
+        },
+        {
+          "age": 25,
+          "gender": "Female",
+          "relationship": "Partner"
+        }
+      ]
+    },
+    {
+      "household": [
+        {
+          "age": 30,
+          "gender": "Male",
+          "relationship": "Head"
+        },
+        {
+          "age": 4,
+          "gender": "Female",
+          "relationship": "Child"
+        }
+      ]
+    },
+    {
+      "household": [
+        {
+          "age": 30,
+          "gender": "Male",
+          "relationship": "Head"
+        },
+        {
+          "age": 28,
+          "gender": "Female",
+          "relationship": "Spouse"
+        }
+      ]
+    },
+    {
+      "household": [
+        {
+          "age": 65,
+          "gender": "Male",
+          "relationship": "Head"
+        },
+        {
+          "age": 68,
+          "gender": "Female",
+          "relationship": "Spouse"
+        }
+      ]
+    },
+    {
+      "household": [
+        {
+          "age": 30,
+          "gender": "Female",
+          "relationship": "Head"
+        },
+        {
+          "age": 5,
+          "gender": "Male",
+          "relationship": "Child"
+        }
+      ]
+    },
+    {
+      "household": [
+        {
+          "age": 29,
+          "gender": "Male",
+          "relationship": "Head"
+        },
+        {
+          "age": 28,
+          "gender": "Female",
+          "relationship": "Spouse"
+        },
+        {
+          "age": 5,
+          "gender": "Female",
+          "relationship": "Child"
+        }
+      ]
+    },
+    {
+      "household": [
+        {
+          "age": 35,
+          "gender": "Female",
+          "relationship": "Head"
+        },
+        {
+          "age": 7,
+          "gender": "Male",
+          "relationship": "Child"
+        },
+        {
+          "age": 10,
+          "gender": "Female",
+          "relationship": "Child"
+        }
+      ]
+    },
+    {
+      "household": [
+        {
+          "age": 29,
+          "gender": "Female",
+          "relationship": "Head"
+        },
+        {
+          "age": 4,
+          "gender": "Male",
+          "relationship": "Child"
+        }
+      ]
+    },
+    {
+      "household": [
+        {
+          "age": 68,
+          "gender": "Male",
+          "relationship": "Head"
+        }
+      ]
+    },
+    {
+      "household": [
+        {
+          "age": 65,
+          "gender": "Male",
+          "relationship": "Head"
+        }
+      ]
+    },
+    {
+      "household": [
+        {
+          "age": 67,
+          "gender": "Female",
+          "relationship": "Head"
+        },
+        {
+          "age": 40,
+          "gender": "Male",
+          "relationship": "Child"
+        }
+      ]
+    },
+    {
+      "household": [
+        {
+          "age": 28,
+          "gender": "Male",
+          "relationship": "Head"
+        },
+        {
+          "age": 25,
+          "gender": "Female",
+          "relationship": "Partner"
+        }
+      ]
+    },
+    {
+      "household": [
+        {
+          "age": 25,
+          "gender": "Female",
+          "relationship": "Head"
+        },
+        {
+          "age": 3,
+          "gender": "Male",
+          "relationship": "Child"
+        }
+      ]
+    },
+    {
+      "household": [
+        {
+          "age": 70,
+          "gender": "Male",
+          "relationship": "Head"
+        },
+        {
+          "age": 68,
+          "gender": "Female",
+          "relationship": "Spouse"
+        }
+      ]
+    },
+    {
+      "household": [
+        {
+          "age": 30,
+          "gender": "Male",
+          "relationship": "Head"
+        },
+        {
+          "age": 5,
+          "gender": "Female",
+          "relationship": "Child"
+        }
+      ]
+    },
+    {
+      "household": [
+        {
+          "age": 68,
+          "gender": "Female",
+          "relationship": "Head"
+        },
+        {
+          "age": 34,
+          "gender": "Male",
+          "relationship": "Child"
+        }
+      ]
+    },
+    {
+      "household": [
+        {
+          "age": 67,
+          "gender": "Male",
+          "relationship": "Head"
+        },
+        {
+          "age": 64,
+          "gender": "Female",
+          "relationship": "Spouse"
+        }
+      ]
+    }
+  ],
+  "generation_metadata": {
+    "model_name": "gpt-4o-mini",
+    "base_prompt": "TASK:\nYou are an AI assistant generating a realistic synthetic population for {LOCATION}.\nYour goal is to add one new household to a growing dataset, so that the generated population matches target distributions.\n\n---\n\nDISTRIBUTIONS (TARGET & CURRENT VS TARGET):\n\nHousehold Size Distribution:\n{HOUSEHOLD_SIZE_STATS}\n\nHousehold Composition Distribution:\n{HOUSEHOLD_COMPOSITION_STATS}\n\nAge Distribution:\n{AGE_STATS}\n\nGender Distribution:\n{SEX_STATS}\n\n---\n\nINSTRUCTIONS:\n1. Review the distributions above for household size, composition, age, and gender.\n   - For the first household: Use target distributions as guidance\n   - For subsequent households: Prioritize categories marked as \"under-represented\"\n2. Select a household size category, prioritizing under-represented sizes when current data is available.\n3. Choose a valid household composition for the selected size, prioritizing categories that are under-represented.\n    - 1-person: contains a single adult of any age.\n    - 2-person: can be either a couple, a lone parent with a child, or unrelated housemates.\n    - 3+ person: can be a family (couples or lone parents with children, extended family), or unrelated housemates.\n    - Non-dependent children are aged 18 or older.\n4. Select individuals for the household, prioritizing under-represented age groups and genders.\n5. For each person, include:\n    - age (0\u2013120)\n    - gender (\"Male\" or \"Female\")\n    - relationship (first must be \"Head\" and be an adult; valid values: \"Spouse\", \"Partner\", \"Child\", \"Parent\", \"Sibling\", \"Grandchild\", \"Grandparent\", \"Housemate\", \"Lodger\", \"Aunt\", \"Uncle\", \"Nephew\", \"Niece\", \"Cousin\", \"Child-in-law\", \"Parent-in-law\", \"Sibling-in-law\")\n6. Output only a JSON object with a \"household\" array containing these individuals. Do not include markdown, formatting, or explanations.\n\n",
+    "schema": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "type": "object",
+      "properties": {
+        "household": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "properties": {
+              "age": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 120
+              },
+              "gender": {
+                "type": "string",
+                "enum": [
+                  "Male",
+                  "Female"
+                ]
+              },
+              "relationship": {
+                "type": "string",
+                "enum": [
+                  "Head",
+                  "Spouse",
+                  "Child",
+                  "Child-in-law",
+                  "Parent",
+                  "Parent-in-law",
+                  "Sibling",
+                  "Sibling-in-law",
+                  "Grandchild",
+                  "Grandparent",
+                  "Aunt",
+                  "Uncle",
+                  "Nephew",
+                  "Niece",
+                  "Cousin",
+                  "Partner",
+                  "Housemate",
+                  "Lodger"
+                ]
+              }
+            },
+            "required": [
+              "age",
+              "gender",
+              "relationship"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "household"
+      ],
+      "additionalProperties": false
+    },
+    "location": "London"
+  }
+}

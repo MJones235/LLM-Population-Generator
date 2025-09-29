@@ -109,7 +109,7 @@ loaded_data = saver.load_population_data("outputs/london_population_2024.json")
 For large population generation tasks that may take hours or days, the library provides progressive saving to prevent data loss:
 
 ```python
-# Generate with automatic checkpointing
+# Generate with automatic checkpointing - checkpoints automatically saved to output_dir/checkpoints
 households = generator.generate_households(
     n_households=100000,  # Large population
     model=llm,
@@ -117,22 +117,22 @@ households = generator.generate_households(
     schema=schema,
     location="United Kingdom",
     batch_size=50,
-    enable_progressive_saving=True,      # Enable automatic saving
-    checkpoint_dir="./checkpoints",      # Where to save checkpoints
-    checkpoint_name="uk_population_100k" # Name for this generation
+    enable_progressive_saving=True,        # Enable automatic saving
+    output_dir="./outputs/uk_project",     # Checkpoints auto-saved to output_dir/checkpoints
+    checkpoint_name="uk_population_100k"  # Name for this generation
 )
 
 # Resume from checkpoint after interruption
 households = generator.generate_households(
     # ... same parameters ...
     enable_progressive_saving=True,
-    checkpoint_dir="./checkpoints",
+    output_dir="./outputs/uk_project",     # Same output directory
     checkpoint_name="uk_population_100k",
     resume_from_checkpoint=True  # Resume where you left off
 )
 
-# Manage checkpoints
-checkpoints = generator.list_checkpoints("./checkpoints")
+# Manage checkpoints (checkpoints automatically organized by project)
+checkpoints = generator.list_checkpoints("./outputs/uk_project/checkpoints")
 for checkpoint in checkpoints:
     print(f"{checkpoint['name']}: {checkpoint['progress']} ({checkpoint['progress_percent']:.1f}%)")
 ```
@@ -143,6 +143,18 @@ for checkpoint in checkpoints:
 - Progress tracking and monitoring
 - Multiple checkpoint management
 - Data safety - never lose more than one batch of work
+- **Automatic organization**: Checkpoints saved to `output_dir/checkpoints` when `output_dir` is provided
+- **Clean API**: No manual checkpoint directory management required
+
+**Recommended Directory Structure** (automatically created):
+```
+outputs/
+└── your_project/
+    ├── checkpoints/           # Progressive saving checkpoints (auto-created)
+    │   └── generation_*.json
+    ├── final_data.csv        # Final generated population
+    └── metadata.json         # Generation metadata
+```
 
 See `PROGRESSIVE_SAVING_GUIDE.md` for detailed documentation and examples.
 
