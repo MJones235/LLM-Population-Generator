@@ -130,10 +130,10 @@ class UNPDHouseholdCompositionClassifier(HouseholdLevelClassifier):
             Dictionary mapping composition types to descriptive labels
         """
         return {
-            "One-person": "One-person household",
+            "One-person": "One-person",
             "Single parent with children": "Single parent with children",
-            "Couple only": "Couple without children",
+            "Couple only": "Couple only",
             "Couple with children": "Couple with children",
-            "Extended family": "Extended family household",
-            "Non-relatives": "Non-relatives household"
+            "Extended family": "Extended family",
+            "Non-relatives": "Non-relatives"
         }

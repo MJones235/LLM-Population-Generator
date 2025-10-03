@@ -35,7 +35,8 @@ class StatisticsManager:
     def register_classifier(self, placeholder: str, 
                           classifier: DemographicClassifier,
                           target_data: Optional[Dict[str, float]] = None,
-                          target_file: Optional[str] = None):
+                          target_file: Optional[str] = None,
+                          format_type: str = "comparison"):
         """Register a classifier as a statistic provider.
         
         Args:
@@ -43,6 +44,7 @@ class StatisticsManager:
             classifier: The classifier instance
             target_data: Target distribution data
             target_file: Path to file containing target data (relative to data_dir)
+            format_type: Format type for this classifier ("comparison", "observed", "target")
         """
         # Load target data from file if specified
         if target_file and self.data_dir:
@@ -56,7 +58,7 @@ class StatisticsManager:
                 for original_label, percentage in target_data.items()
             }
         
-        provider = ClassifierStatisticProvider(classifier, target_data)
+        provider = ClassifierStatisticProvider(classifier, target_data, format_type)
         statistic_name = provider.get_statistic_name()
         
         self.providers[statistic_name] = provider
@@ -65,7 +67,8 @@ class StatisticsManager:
     def register_custom_statistic(self, placeholder: str, name: str,
                                 compute_func: Callable[[pd.DataFrame], Dict[str, float]],
                                 target_data: Optional[Dict[str, float]] = None,
-                                target_file: Optional[str] = None):
+                                target_file: Optional[str] = None,
+                                format_type: str = "comparison"):
         """Register a custom statistic function.
         
         Args:
@@ -74,12 +77,13 @@ class StatisticsManager:
             compute_func: Function to compute the statistic
             target_data: Target distribution data
             target_file: Path to file containing target data
+            format_type: Format type for this statistic ("comparison", "observed", "target")
         """
         # Load target data from file if specified
         if target_file and self.data_dir:
             target_data = self._load_target_data(target_file)
             
-        provider = CustomStatisticProvider(name, compute_func, target_data)
+        provider = CustomStatisticProvider(name, compute_func, target_data, format_type)
         
         self.providers[name] = provider
         self.placeholder_mappings[placeholder] = name
@@ -175,7 +179,26 @@ class StatisticsManager:
                         if hasattr(provider, 'classifier') and hasattr(provider.classifier, 'get_label_order'):
                             label_order = provider.classifier.get_label_order()
                         
-                        target_text = self.formatter._format_distribution(provider.target_data, "Target", label_order)
+                        # Create a mock StatisticResult to access metadata for formatting
+                        from .core import StatisticResult
+                        mock_result = StatisticResult(
+                            name=statistic_name,
+                            observed={},  # Empty for target-only display
+                            target=provider.target_data,
+                            label_order=label_order
+                        )
+                        
+                        # Add metadata for data type if available
+                        if hasattr(provider, 'classifier') and hasattr(provider.classifier, 'data_type'):
+                            mock_result.metadata = {'data_type': provider.classifier.data_type}
+                        else:
+                            mock_result.metadata = {'data_type': 'percentage'}
+                        
+                        # Add threshold if available  
+                        if hasattr(provider, 'classifier') and hasattr(provider.classifier, 'threshold') and provider.classifier.threshold is not None:
+                            mock_result.metadata['threshold'] = provider.classifier.threshold
+                        
+                        target_text = self.formatter._format_distribution(provider.target_data, "Target", label_order, mock_result)
                         prompt = prompt.replace(f"{{{placeholder}}}", target_text)
                     else:
                         # No target data available, remove placeholder
@@ -191,7 +214,12 @@ class StatisticsManager:
         # Replace each placeholder
         for placeholder, statistic_name in self.placeholder_mappings.items():
             if statistic_name in results:
-                stat_text = self.formatter.format_statistic_text(results[statistic_name], format_type, threshold)
+                # Use provider-specific format_type if available, otherwise use the global format_type
+                provider_format_type = format_type
+                if statistic_name in self.providers and hasattr(self.providers[statistic_name], 'format_type'):
+                    provider_format_type = self.providers[statistic_name].format_type
+                
+                stat_text = self.formatter.format_statistic_text(results[statistic_name], provider_format_type, threshold)
                 prompt = prompt.replace(f"{{{placeholder}}}", stat_text)
             else:
                 # Remove placeholder if no statistic available

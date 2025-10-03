@@ -15,45 +15,72 @@ class StatisticFormatter:
         Args:
             result: The statistic result to format
             format_type: Format type ("comparison", "observed", "target")
-            threshold: Threshold for showing guidance text (None to disable guidance)
+            threshold: Default threshold for showing guidance text (can be overridden by classifier)
             
         Returns:
             Formatted text representation
         """
+        # Use classifier-specific threshold if available, otherwise use provided threshold
+        effective_threshold = threshold
+        if result.metadata and 'threshold' in result.metadata:
+            effective_threshold = result.metadata['threshold']
+        
         if format_type == "observed":
-            return self._format_distribution(result.observed, "Current", result.label_order)
+            return self._format_distribution(result.observed, "Current", result.label_order, result)
         elif format_type == "target" and result.target:
-            return self._format_distribution(result.target, "Target", result.label_order)
+            return self._format_distribution(result.target, "Target", result.label_order, result)
         elif format_type == "comparison" and result.target:
-            return self._format_comparison(result.observed, result.target, threshold, result.label_order)
+            return self._format_comparison(result.observed, result.target, effective_threshold, result.label_order, result)
         else:
-            return self._format_distribution(result.observed, "Current", result.label_order)
+            return self._format_distribution(result.observed, "Current", result.label_order, result)
     
     def _format_distribution(self, distribution: Dict[str, float], label: str, 
-                           label_order: Optional[List[str]] = None) -> str:
+                           label_order: Optional[List[str]] = None,
+                           result: Optional[StatisticResult] = None) -> str:
         """Format a single distribution.
         
         Args:
             distribution: Dictionary of category -> percentage
             label: Label for the distribution (e.g., "Target", "Current")
             label_order: Optional ordered list of labels for consistent ordering
+            result: Optional StatisticResult for metadata access
         """
         if label_order:
-            # Use provided label order, only including categories that exist in distribution
-            ordered_keys = [k for k in label_order if k in distribution]
+            # Use provided label order, but only include labels with non-zero values
+            # or labels that actually exist in the distribution
+            ordered_keys = []
+            for k in label_order:
+                if k in distribution and distribution[k] > 0:
+                    ordered_keys.append(k)
             # Add any missing keys not in label_order (shouldn't happen but defensive)
-            missing_keys = [k for k in distribution.keys() if k not in ordered_keys]
+            missing_keys = [k for k in distribution.keys() if k not in ordered_keys and distribution[k] > 0]
             ordered_keys.extend(sorted(missing_keys))
         else:
-            # Fall back to alphabetical sorting
-            ordered_keys = sorted(distribution.keys())
+            # Fall back to alphabetical sorting, only including non-zero values
+            ordered_keys = sorted([k for k in distribution.keys() if distribution[k] > 0])
+        
+        # Check data type from metadata
+        is_value_data = False
+        if result and result.metadata and 'data_type' in result.metadata:
+            is_value_data = result.metadata['data_type'] == 'value'
+        
+        # Format items based on data type
+        display_items = []
+        for k in ordered_keys:
+            value = distribution[k]  # We know this exists since we filtered above
+            if is_value_data:
+                # Format as values (no % sign)
+                display_items.append(f"{k}: {value:.1f}")
+            else:
+                # Format as percentages
+                display_items.append(f"{k}: {value:.1f}%")
             
-        items = [f"{k}: {distribution[k]:.1f}%" for k in ordered_keys]
-        return f"{label} Distribution: {', '.join(items)}"
+        return f"{label}:\n{'\n'.join(display_items)}"
     
     def _format_comparison(self, observed: Dict[str, float], target: Dict[str, float], 
                            threshold: Optional[float] = 0.5, 
-                           label_order: Optional[List[str]] = None) -> str:
+                           label_order: Optional[List[str]] = None,
+                           result: Optional[StatisticResult] = None) -> str:
         """Format a comparison between observed and target distributions.
         
         Args:
@@ -61,6 +88,7 @@ class StatisticFormatter:
             target: Target distribution  
             threshold: Threshold for showing guidance text (None to disable guidance)
             label_order: Optional ordered list of labels for consistent ordering
+            result: Optional StatisticResult for metadata access
         """
         lines = []
         all_keys = set(observed.keys()) | set(target.keys())
@@ -75,6 +103,11 @@ class StatisticFormatter:
             # Fall back to alphabetical sorting
             ordered_keys = sorted(all_keys)
         
+        # Check data type from metadata
+        is_value_data = False
+        if result and result.metadata and 'data_type' in result.metadata:
+            is_value_data = result.metadata['data_type'] == 'value'
+        
         for key in ordered_keys:
             obs_val = observed.get(key, 0.0)
             tgt_val = target.get(key, 0.0)
@@ -82,9 +115,18 @@ class StatisticFormatter:
             # Generate guidance text if threshold is set and difference exceeds threshold
             guidance_text = ""
             if threshold is not None and abs(obs_val - tgt_val) >= threshold:
-                underrepresented = obs_val < tgt_val
-                guidance_text = " (under-represented)" if underrepresented else " (over-represented)"
+                if is_value_data:
+                    # For metrics, use "too high/too low"
+                    guidance_text = " (too low)" if obs_val < tgt_val else " (too high)"
+                else:
+                    # For distributions, use "under/over-represented"
+                    guidance_text = " (under-represented)" if obs_val < tgt_val else " (over-represented)"
             
-            lines.append(f"- {key}: current = {obs_val:.1f}%, target = {tgt_val:.1f}%{guidance_text}")
+            if is_value_data:
+                # Format as values (no % sign)
+                lines.append(f"- {key}: current = {obs_val:.1f}, target = {tgt_val:.1f}{guidance_text}")
+            else:
+                # Format as percentages
+                lines.append(f"- {key}: current = {obs_val:.1f}%, target = {tgt_val:.1f}%{guidance_text}")
         
         return "\n".join(lines)

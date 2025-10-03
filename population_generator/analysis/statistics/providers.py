@@ -34,15 +34,18 @@ class ClassifierStatisticProvider(StatisticProvider):
     """Wrapper to use existing classifiers as statistic providers."""
     
     def __init__(self, classifier: DemographicClassifier, 
-                 target_data: Optional[Dict[str, float]] = None):
+                 target_data: Optional[Dict[str, float]] = None,
+                 format_type: str = "comparison"):
         """Initialize with a classifier.
         
         Args:
             classifier: The classifier to wrap
             target_data: Optional target distribution data
+            format_type: Format type for this classifier ("comparison", "observed", "target")
         """
         self.classifier = classifier
         self.target_data = target_data
+        self.format_type = format_type
     
     def compute_statistic(self, synthetic_df: pd.DataFrame, **kwargs) -> StatisticResult:
         """Compute statistic using the wrapped classifier."""
@@ -54,12 +57,25 @@ class ClassifierStatisticProvider(StatisticProvider):
         label_order = None
         if hasattr(self.classifier, 'get_label_order'):
             label_order = self.classifier.get_label_order()
+        
+        # Build metadata with classifier info
+        metadata = {"classifier_type": type(self.classifier).__name__}
+        
+        # Add data type if available (for FunctionalClassifier)
+        if hasattr(self.classifier, 'data_type'):
+            metadata['data_type'] = self.classifier.data_type
+        else:
+            metadata['data_type'] = 'percentage'  # Default for other classifiers
+        
+        # Add threshold if available (for any classifier with threshold attribute)
+        if hasattr(self.classifier, 'threshold') and self.classifier.threshold is not None:
+            metadata['threshold'] = self.classifier.threshold
             
         return StatisticResult(
             name=name,
             observed=observed,
             target=self.target_data,
-            metadata={"classifier_type": type(self.classifier).__name__},
+            metadata=metadata,
             label_order=label_order
         )
     
@@ -72,17 +88,20 @@ class CustomStatisticProvider(StatisticProvider):
     """Provider for custom statistic functions."""
     
     def __init__(self, name: str, compute_func: Callable[[pd.DataFrame], Dict[str, float]],
-                 target_data: Optional[Dict[str, float]] = None):
+                 target_data: Optional[Dict[str, float]] = None,
+                 format_type: str = "comparison"):
         """Initialize with a custom function.
         
         Args:
             name: Name of the statistic
             compute_func: Function that takes DataFrame and returns Dict[str, float]
             target_data: Optional target distribution data
+            format_type: Format type for this statistic ("comparison", "observed", "target")
         """
         self.name = name
         self.compute_func = compute_func
         self.target_data = target_data
+        self.format_type = format_type
     
     def compute_statistic(self, synthetic_df: pd.DataFrame, **kwargs) -> StatisticResult:
         """Compute statistic using the custom function."""

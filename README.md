@@ -8,6 +8,7 @@ A Python package for generating synthetic population data using Large Language M
 - **Progressive Saving**: Automatic checkpointing for large populations to prevent data loss
 - **Failure Tracking & Research Analytics**: Comprehensive failure tracking for academic research on LLM reliability
 - **Customizable Classifiers**: Extensible household size and composition classification systems
+- **Per-Classifier Format Control**: Configure how each statistic appears in prompts (comparison, observed-only, or target-only)
 - **Flexible Data Sources**: Support for custom census data and statistical targets
 - **Batch Processing**: Efficient generation of large populations with configurable batch sizes
 - **Statistical Feedback**: Dynamic prompt adjustment based on generated vs. target distributions

@@ -3,8 +3,22 @@
 Comprehensive LLM Population Generator Example
 
 This example demonstrates ALL major features of the LLM Population Generator:
-1. OpenAI model integration (GPT-4o-mini)
-2. UK demographic classifiers with statistical feedback
+1. OpenAI model integration (GPT-4        # Register UK demographic classifiers with different format types
+        classifiers = [
+            ("HOUSEHOLD_SIZE_STATS", UKHouseholdSizeClassifier(), "targets/household_size.csv", "comparison"),
+            ("HOUSEHOLD_COMPOSITION_STATS", UKHouseholdCompositionClassifier(), "targets/household_composition.csv", "comparison"),
+            ("AGE_STATS", UKAgeClassifier(), "targets/age.csv", "observed"),  # Show only current distribution
+            ("SEX_STATS", UKSexClassifier(), "targets/sex.csv", "target")     # Show only target distribution
+        ]
+        
+        for placeholder, classifier, target_file, format_type in classifiers:
+            generator.prompt_manager.register_classifier(
+                placeholder,
+                classifier,
+                target_file=target_file,
+                format_type=format_type
+            )
+            print(f"✅ {classifier.__class__.__name__} registered (format: {format_type})")emographic classifiers with statistical feedback
 3. Token tracking and cost analysis
 4. Failure tracking and analysis
 5. Custom validation rules

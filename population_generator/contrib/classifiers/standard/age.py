@@ -8,17 +8,9 @@ import pandas as pd
 class StandardAgeClassifier(IndividualLevelClassifier):
     """Standard age classifier that can be reused across different regional implementations."""
     
-    def __init__(self, region_name: str):
-        """Initialize with region name for identification.
-        
-        Args:
-            region_name: Name/identifier for the region (e.g., 'uk_census', 'unpd')
-        """
-        self.region_name = region_name
-    
     def get_name(self) -> str:
         """Get classifier name."""
-        return self.region_name
+        return "standard_age"
 
     def classify_individual(self, individual: pd.Series, **kwargs) -> str:
         """Classify an individual by age band.

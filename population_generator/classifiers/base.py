@@ -13,6 +13,14 @@ class DemographicClassifier(ABC):
     the specific classification logic for their domain.
     """
     
+    def __init__(self, threshold: Optional[float] = None):
+        """Initialize the demographic classifier.
+        
+        Args:
+            threshold: Optional threshold for showing guidance text (overrides global threshold)
+        """
+        self.threshold = threshold
+    
     @abstractmethod
     def get_name(self) -> str:
         """Get the classifier name/identifier."""
@@ -80,6 +88,14 @@ class HouseholdLevelClassifier(DemographicClassifier):
     by household_id and then classifying each household.
     """
     
+    def __init__(self, threshold: Optional[float] = None):
+        """Initialize household-level classifier.
+        
+        Args:
+            threshold: Optional threshold for showing guidance text (overrides global threshold)
+        """
+        super().__init__(threshold=threshold)
+    
     @abstractmethod
     def classify_household(self, household_df: pd.DataFrame, **kwargs) -> str:
         """Classify a single household.
@@ -132,6 +148,14 @@ class IndividualLevelClassifier(DemographicClassifier):
     This classifier operates on individual-level data, classifying
     each person in the synthetic population.
     """
+    
+    def __init__(self, threshold: Optional[float] = None):
+        """Initialize individual-level classifier.
+        
+        Args:
+            threshold: Optional threshold for showing guidance text (overrides global threshold)
+        """
+        super().__init__(threshold=threshold)
     
     @abstractmethod
     def classify_individual(self, individual: pd.Series, **kwargs) -> str:
@@ -188,7 +212,9 @@ class FunctionalClassifier(DemographicClassifier):
                  classify_func: Callable[[pd.DataFrame], Dict[str, float]],
                  label_order: Optional[List[str]] = None,
                  label_map: Optional[Dict[str, str]] = None,
-                 description: Optional[str] = None):
+                 description: Optional[str] = None,
+                 data_type: str = "percentage",
+                 threshold: Optional[float] = None):
         """Initialize functional classifier.
         
         Args:
@@ -197,12 +223,16 @@ class FunctionalClassifier(DemographicClassifier):
             label_order: Optional ordered list of labels
             label_map: Optional mapping from internal to display labels
             description: Optional description of the classifier
+            data_type: Type of data ("percentage" or "value") - controls formatting
+            threshold: Optional threshold for showing guidance text (overrides global threshold)
         """
+        super().__init__(threshold=threshold)
         self.name = name
         self.classify_func = classify_func
         self.label_order = label_order
         self.label_map = label_map
         self.description = description
+        self.data_type = data_type
     
     def get_name(self) -> str:
         """Get classifier name."""

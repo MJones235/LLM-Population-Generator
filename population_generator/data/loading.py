@@ -19,8 +19,11 @@ class DataLoader:
         1,30.0
         2,35.0
         3,15.0
-        ...
-    
+        
+    OR for metrics:
+        metric,value
+        mean_household_size,2.4
+        
     Users must preprocess raw data into this format.
     """
     
@@ -31,7 +34,7 @@ class DataLoader:
         """Load target data from standardized CSV file.
         
         Args:
-            file_path: Path to CSV file with category,percentage columns
+            file_path: Path to CSV file with category,percentage OR metric,value columns
             force_reload: If True, bypass cache and reload from file
             
         Returns:
@@ -73,9 +76,9 @@ class DataLoader:
         percentage_col = self._find_percentage_column(df)
         
         if not category_col:
-            raise ValueError(f"No 'category' column found in {file_path}. Expected columns: category, percentage")
+            raise ValueError(f"No category/metric column found in {file_path}. Expected columns: category,percentage OR metric,value")
         if not percentage_col:
-            raise ValueError(f"No 'percentage' column found in {file_path}. Expected columns: category, percentage")
+            raise ValueError(f"No percentage/value column found in {file_path}. Expected columns: category,percentage OR metric,value")
         
         # Convert to dictionary
         distribution = {}
@@ -108,7 +111,7 @@ class DataLoader:
     def _find_category_column(self, df: pd.DataFrame) -> str:
         """Find the category column."""
         for col in df.columns:
-            if col.lower().strip() in ['category', 'categories', 'group', 'groups', 'label', 'labels']:
+            if col.lower().strip() in ['category', 'categories', 'group', 'groups', 'label', 'labels', 'metric', 'metrics']:
                 return col
         return None
     
@@ -116,7 +119,7 @@ class DataLoader:
         """Find the percentage column."""
         for col in df.columns:
             col_lower = col.lower().strip()
-            if col_lower in ['percentage', 'percent', '%', 'proportion', 'prop', 'rate']:
+            if col_lower in ['percentage', 'percent', '%', 'proportion', 'prop', 'rate', 'value', 'values']:
                 return col
         return None
     

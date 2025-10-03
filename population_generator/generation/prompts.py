@@ -99,7 +99,8 @@ class PromptManager:
     
     def register_classifier(self, placeholder: str, classifier: DemographicClassifier,
                           target_data: Optional[Dict[str, float]] = None,
-                          target_file: Optional[str] = None):
+                          target_file: Optional[str] = None,
+                          format_type: str = "comparison"):
         """Register any demographic classifier for a placeholder.
         
         Args:
@@ -107,15 +108,17 @@ class PromptManager:
             classifier: DemographicClassifier instance
             target_data: Target distribution data
             target_file: Path to target data file (relative to data directory)
+            format_type: Format type for this classifier ("comparison", "observed", "target")
         """
         self.statistics_manager.register_classifier(
-            placeholder, classifier, target_data, target_file
+            placeholder, classifier, target_data, target_file, format_type
         )
 
     def register_custom_statistic(self, placeholder: str, name: str,
                                 compute_func: Callable[[pd.DataFrame], Dict[str, float]],
                                 target_data: Optional[Dict[str, float]] = None,
-                                target_file: Optional[str] = None):
+                                target_file: Optional[str] = None,
+                                format_type: str = "comparison"):
         """Register a custom statistic for any placeholder.
         
         Args:
@@ -124,9 +127,10 @@ class PromptManager:
             compute_func: Function to compute statistic from DataFrame
             target_data: Target distribution data
             target_file: Path to target data file
+            format_type: Format type for this statistic ("comparison", "observed", "target")
         """
         self.statistics_manager.register_custom_statistic(
-            placeholder, name, compute_func, target_data, target_file
+            placeholder, name, compute_func, target_data, target_file, format_type
         )
     
     def clear_classifiers(self):
