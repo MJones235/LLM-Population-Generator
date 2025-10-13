@@ -81,10 +81,10 @@ class UNPDHouseholdSizeClassifier(HouseholdLevelClassifier):
             Dictionary mapping size buckets to descriptive labels
         """
         return {
-            "1": "1 person",
-            "2-3": "2-3 people", 
-            "4-5": "4-5 people",
-            "6+": "6+ people"
+            "1": "1",
+            "2-3": "2-3",
+            "4-5": "4-5",
+            "6+": "6+"
         }
     
     def get_label_order(self) -> list:

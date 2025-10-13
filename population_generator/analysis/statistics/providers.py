@@ -1,5 +1,7 @@
 """Statistic provider implementations."""
 
+import logging
+import traceback
 from abc import ABC, abstractmethod
 from typing import Dict, Optional, Callable
 import pandas as pd
@@ -49,9 +51,21 @@ class ClassifierStatisticProvider(StatisticProvider):
     
     def compute_statistic(self, synthetic_df: pd.DataFrame, **kwargs) -> StatisticResult:
         """Compute statistic using the wrapped classifier."""
-        # Use the classifier's compute_observed_distribution method
-        observed = self.classifier.compute_observed_distribution(synthetic_df, **kwargs)
-        name = f"{self.classifier.__class__.__name__.lower()}_{self.classifier.get_name()}"
+        try:
+            # Use the classifier's compute_observed_distribution method
+            logging.info(f"Computing statistic for classifier: {self.classifier.__class__.__name__}")
+            observed = self.classifier.compute_observed_distribution(synthetic_df, **kwargs)
+            logging.info(f"Observed distribution: {observed}")
+            logging.info(f"Target distribution: {self.target_data}")
+            name = f"{self.classifier.__class__.__name__.lower()}_{self.classifier.get_name()}"
+        except Exception as e:
+            logging.error(f"Error in compute_statistic for classifier {self.classifier.__class__.__name__}:")
+            logging.error(f"  Error: {str(e)}")
+            logging.error(f"  synthetic_df shape: {synthetic_df.shape}")
+            logging.error(f"  synthetic_df columns: {list(synthetic_df.columns)}")
+            logging.error(f"  synthetic_df dtypes: {dict(synthetic_df.dtypes)}")
+            logging.error(f"  Stack trace: {traceback.format_exc()}")
+            raise  # Re-raise the error
         
         # Get label order from classifier if available
         label_order = None

@@ -1,5 +1,7 @@
 """Batch processing for population generation."""
 
+import logging
+import traceback
 from typing import Any, Dict, List, Optional
 import pandas as pd
 
@@ -122,13 +124,31 @@ class BatchProcessor:
                     people_data.append(dict(**person, household_id=household_idx))
         
         synthetic_df = pd.DataFrame(people_data)
+        
+        # Log DataFrame info for debugging
+        logging.info(f"Created synthetic_df with {len(synthetic_df)} rows")
+        if not synthetic_df.empty:
+            logging.info(f"DataFrame columns: {list(synthetic_df.columns)}")
+            logging.info(f"DataFrame dtypes: {dict(synthetic_df.dtypes)}")
+            # Log a sample of the data
+            logging.info(f"Sample data (first 3 rows): {synthetic_df.head(3).to_dict('records')}")
 
         # Update prompt with current statistics vs targets
-        return self.prompt_manager.prepare_prompt_with_feedback(
-            base_prompt.replace("{LOCATION}", location),
-            synthetic_df=synthetic_df,
-            relationship_col="relationship"  # For household composition classifiers
-        )
+        try:
+            result = self.prompt_manager.prepare_prompt_with_feedback(
+                base_prompt.replace("{LOCATION}", location),
+                synthetic_df=synthetic_df,
+                relationship_col="relationship"  # For household composition classifiers
+            )
+            return result
+        except Exception as e:
+            logging.error(f"Error in prepare_prompt_with_feedback:")
+            logging.error(f"  Error: {str(e)}")
+            logging.error(f"  synthetic_df shape: {synthetic_df.shape}")
+            logging.error(f"  synthetic_df columns: {list(synthetic_df.columns)}")
+            logging.error(f"  synthetic_df dtypes: {dict(synthetic_df.dtypes)}")
+            logging.error(f"  Stack trace: {traceback.format_exc()}")
+            raise  # Re-raise the error
     
     def _record_token_usage(self, model: BaseLLM, batch_size: int):
         """Record token usage for the batch.

@@ -8,4 +8,4 @@ class UKAgeClassifier(StandardAgeClassifier):
     
     def __init__(self):
         """Initialize with UK Census region identifier."""
-        super().__init__('uk_census')
+        super().__init__(threshold=None)

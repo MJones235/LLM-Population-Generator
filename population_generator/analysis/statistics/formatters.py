@@ -1,5 +1,7 @@
 """Text formatting for statistics."""
 
+import logging
+import traceback
 from typing import Dict, Optional, List
 
 from .core import StatisticResult
@@ -45,19 +47,27 @@ class StatisticFormatter:
             label_order: Optional ordered list of labels for consistent ordering
             result: Optional StatisticResult for metadata access
         """
-        if label_order:
-            # Use provided label order, but only include labels with non-zero values
-            # or labels that actually exist in the distribution
-            ordered_keys = []
-            for k in label_order:
-                if k in distribution and distribution[k] > 0:
-                    ordered_keys.append(k)
-            # Add any missing keys not in label_order (shouldn't happen but defensive)
-            missing_keys = [k for k in distribution.keys() if k not in ordered_keys and distribution[k] > 0]
-            ordered_keys.extend(sorted(missing_keys))
-        else:
-            # Fall back to alphabetical sorting, only including non-zero values
-            ordered_keys = sorted([k for k in distribution.keys() if distribution[k] > 0])
+        try:
+            if label_order:
+                # Use provided label order, but only include labels with non-zero values
+                # or labels that actually exist in the distribution
+                ordered_keys = []
+                for k in label_order:
+                    if k in distribution and distribution[k] > 0:
+                        ordered_keys.append(k)
+                # Add any missing keys not in label_order (shouldn't happen but defensive)
+                missing_keys = [k for k in distribution.keys() if k not in ordered_keys and distribution[k] > 0]
+                ordered_keys.extend(sorted(missing_keys))
+            else:
+                # Fall back to alphabetical sorting, only including non-zero values
+                ordered_keys = sorted([k for k in distribution.keys() if distribution[k] > 0])
+        except TypeError as e:
+            logging.error(f"TypeError in _format_distribution when processing distribution:")
+            logging.error(f"  distribution: {distribution}")
+            logging.error(f"  label_order: {label_order}")
+            logging.error(f"  result.metadata: {result.metadata if result else 'No result'}")
+            logging.error(f"  Stack trace: {traceback.format_exc()}")
+            raise  # Re-raise the error so we get the full stack trace
         
         # Check data type from metadata
         is_value_data = False
@@ -114,13 +124,24 @@ class StatisticFormatter:
             
             # Generate guidance text if threshold is set and difference exceeds threshold
             guidance_text = ""
-            if threshold is not None and abs(obs_val - tgt_val) >= threshold:
-                if is_value_data:
-                    # For metrics, use "too high/too low"
-                    guidance_text = " (too low)" if obs_val < tgt_val else " (too high)"
-                else:
-                    # For distributions, use "under/over-represented"
-                    guidance_text = " (under-represented)" if obs_val < tgt_val else " (over-represented)"
+            try:
+                if threshold is not None and abs(obs_val - tgt_val) >= threshold:
+                    if is_value_data:
+                        # For metrics, use "too high/too low"
+                        guidance_text = " (too low)" if obs_val < tgt_val else " (too high)"
+                    else:
+                        # For distributions, use "under/over-represented"
+                        guidance_text = " (under-represented)" if obs_val < tgt_val else " (over-represented)"
+            except TypeError as e:
+                logging.error(f"TypeError in _format_comparison for key '{key}':")
+                logging.error(f"  obs_val: {obs_val} (type: {type(obs_val)})")
+                logging.error(f"  tgt_val: {tgt_val} (type: {type(tgt_val)})")
+                logging.error(f"  threshold: {threshold} (type: {type(threshold)})")
+                logging.error(f"  observed dict: {observed}")
+                logging.error(f"  target dict: {target}")
+                logging.error(f"  result.metadata: {result.metadata if result else 'No result'}")
+                logging.error(f"  Stack trace: {traceback.format_exc()}")
+                raise  # Re-raise the error so we get the full stack trace
             
             if is_value_data:
                 # Format as values (no % sign)

@@ -12,7 +12,7 @@ class UNPDAgeSexPyramidClassifier(StandardAgeSexPyramidClassifier):
     
     def __init__(self):
         """Initialize with UNPD region identifier."""
-        super().__init__('unpd')
+        super().__init__(threshold=None)  # Don't pass 'unpd' as threshold
     
     # The standard implementation is suitable for UNPD data
     # Override methods below if UNPD-specific customization is needed

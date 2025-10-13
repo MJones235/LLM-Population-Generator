@@ -1,5 +1,6 @@
 """Main population generator class."""
 
+import logging
 from typing import Any, Dict, List, Optional, Union
 from pathlib import Path
 
@@ -20,14 +21,23 @@ class PopulationGenerator:
     def __init__(self, 
                  data_path: Optional[str] = None,
                  prompts_path: Optional[str] = None,
-                 config_path: Optional[str] = None):
+                 config_path: Optional[str] = None,
+                 enable_debug_logging: bool = False):
         """Initialize the population generator.
         
         Args:
             data_path: Base path for data files (census, etc.)
             prompts_path: Path to prompt templates
             config_path: Path to configuration file
+            enable_debug_logging: Enable debug logging for troubleshooting
         """
+        if enable_debug_logging:
+            logging.basicConfig(
+                level=logging.INFO,
+                format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+            )
+            logging.getLogger().setLevel(logging.INFO)
+        
         self.config = Config(config_path)
         
         if data_path:
