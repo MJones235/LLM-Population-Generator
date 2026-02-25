@@ -125,14 +125,6 @@ class BatchProcessor:
         
         synthetic_df = pd.DataFrame(people_data)
         
-        # Log DataFrame info for debugging
-        logging.info(f"Created synthetic_df with {len(synthetic_df)} rows")
-        if not synthetic_df.empty:
-            logging.info(f"DataFrame columns: {list(synthetic_df.columns)}")
-            logging.info(f"DataFrame dtypes: {dict(synthetic_df.dtypes)}")
-            # Log a sample of the data
-            logging.info(f"Sample data (first 3 rows): {synthetic_df.head(3).to_dict('records')}")
-
         # Update prompt with current statistics vs targets
         try:
             result = self.prompt_manager.prepare_prompt_with_feedback(

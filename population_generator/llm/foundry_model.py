@@ -17,7 +17,7 @@ class FoundryModel(BaseLLM):
                  endpoint: str = "https://population-generator-resource.services.ai.azure.com/models",
                  api_version: str = "2024-05-01-preview",
                  temperature: float = 0.7, 
-                 top_p: float = 0.95, 
+                 top_p: float = 0.85, 
                  top_k: int = 40, 
                  **kwargs):
         """Initialize Azure AI Foundry model.

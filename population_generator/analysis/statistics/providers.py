@@ -52,11 +52,7 @@ class ClassifierStatisticProvider(StatisticProvider):
     def compute_statistic(self, synthetic_df: pd.DataFrame, **kwargs) -> StatisticResult:
         """Compute statistic using the wrapped classifier."""
         try:
-            # Use the classifier's compute_observed_distribution method
-            logging.info(f"Computing statistic for classifier: {self.classifier.__class__.__name__}")
             observed = self.classifier.compute_observed_distribution(synthetic_df, **kwargs)
-            logging.info(f"Observed distribution: {observed}")
-            logging.info(f"Target distribution: {self.target_data}")
             name = f"{self.classifier.__class__.__name__.lower()}_{self.classifier.get_name()}"
         except Exception as e:
             logging.error(f"Error in compute_statistic for classifier {self.classifier.__class__.__name__}:")
