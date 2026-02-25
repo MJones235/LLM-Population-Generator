@@ -3,6 +3,7 @@
 from .base import BaseLLM, LLMResponse, TokenUsage
 from .openai_model import OpenAIModel
 from .foundry_model import FoundryModel
+from .ollama_model import OllamaModel, create_ollama_model
 
 __all__ = [
     "BaseLLM", 
@@ -10,6 +11,6 @@ __all__ = [
     "TokenUsage", 
     "OpenAIModel", 
     "FoundryModel",
-    "create_openai_model",
-    "create_foundry_model"
+    "OllamaModel",
+    "create_ollama_model"
 ]
