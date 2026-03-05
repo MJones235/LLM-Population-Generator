@@ -1,7 +1,7 @@
 """Base class for LLM interfaces."""
 
 from abc import ABC, abstractmethod
-from typing import Any, Dict, List, Union, Optional, NamedTuple
+from typing import Any, Dict, List, Union, Optional, NamedTuple, Tuple
 import json
 import jsonschema
 import time
@@ -129,6 +129,54 @@ class BaseLLM(ABC):
             Dictionary containing model information
         """
         raise NotImplementedError
+
+    @staticmethod
+    def parse_and_validate_response(
+        raw: str,
+        json_schema: Dict[str, Any],
+        custom_validator: Optional["CustomValidator"] = None,
+    ) -> Tuple[Optional[Dict[str, Any]], Optional[str]]:
+        """Parse a raw LLM text response and validate it against a JSON schema.
+
+        Intended for use outside the normal generate_json retry loop — for
+        example when processing downloaded batch API results.
+
+        Args:
+            raw:              Raw text from the model (may have surrounding
+                              whitespace or markdown fences, which are stripped).
+            json_schema:      JSON Schema dict used for structural validation.
+            custom_validator: Optional CustomValidator for domain-rule checking.
+
+        Returns:
+            ``(data, None)`` on success, ``(None, error_string)`` on failure.
+            The error string is prefixed with the failure category:
+            ``json_parse:``, ``schema_validation:``, or ``custom_validation:``.
+        """
+        text = raw.strip()
+        # Strip markdown code fences if the model wraps its output.
+        if text.startswith("```"):
+            lines = text.splitlines()
+            text = "\n".join(lines[1:-1] if lines[-1].strip() == "```" else lines[1:])
+
+        try:
+            data = json.loads(text)
+        except json.JSONDecodeError as exc:
+            return None, f"json_parse: {exc}"
+
+        try:
+            jsonschema.validate(data, json_schema)
+        except jsonschema.ValidationError as exc:
+            return None, f"schema_validation: {exc.message}"
+
+        if custom_validator:
+            errors = custom_validator.validate(data)
+            if errors:
+                detail = "; ".join(
+                    f"{e.rule_name}: {e.error_message}" for e in errors[:3]
+                )
+                return None, f"custom_validation: {detail}"
+
+        return data, None
 
     def generate_json(
         self,

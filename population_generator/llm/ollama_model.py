@@ -47,6 +47,7 @@ class OllamaModel(BaseLLM):
         self.temperature = temperature
         self.top_p = top_p
         self.top_k = top_k
+        self._extra_kwargs = kwargs
 
         # Ensure model is available
         self._ensure_model_available()
@@ -104,30 +105,6 @@ class OllamaModel(BaseLLM):
             return response
 
         raise TimeoutError("LLM call did not return a response.")
-
-    def generate_text_with_metadata(
-        self, prompt: Union[str, List[str]], timeout: int = 30
-    ) -> LLMResponse:
-        """Generate text with metadata (estimated token usage)."""
-        response = self.generate_text(prompt, timeout)
-
-        # Estimate token usage (4 chars ≈ 1 token)
-        if isinstance(prompt, list):
-            total_input = sum(len(p) // 4 for p in prompt)
-            total_output = (
-                sum(len(r) // 4 for r in response) if isinstance(response, list) else 0
-            )
-        else:
-            total_input = len(prompt) // 4
-            total_output = len(response) // 4 if isinstance(response, str) else 0
-
-        token_usage = TokenUsage(
-            input_tokens=total_input,
-            output_tokens=total_output,
-            total_tokens=total_input + total_output,
-        )
-
-        return LLMResponse(content=response, token_usage=token_usage)
 
     def get_model_metadata(self) -> Dict[str, Any]:
         """Get model metadata."""

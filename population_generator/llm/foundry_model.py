@@ -52,7 +52,9 @@ class FoundryModel(BaseLLM):
         
         Args:
             prompt: Single prompt or list of prompts
-            timeout: Request timeout in seconds
+            timeout: Request timeout in seconds (NOTE: the Azure AI Foundry SDK
+                does not expose a per-request timeout parameter; this argument is
+                accepted for interface compatibility but is not enforced here.)
             
         Returns:
             Generated text response(s)
