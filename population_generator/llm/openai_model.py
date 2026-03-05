@@ -110,6 +110,8 @@ class OpenAIModel(BaseLLM):
             response = self.client.chat.completions.create(
                 model=self.model_name,  # This should be the deployment name in Azure
                 messages=[{"role": "user", "content": prompt}],
+                temperature=self.temperature,
+                top_p=self.top_p,
                 timeout=timeout
             )
             return response.choices[0].message.content
@@ -122,6 +124,8 @@ class OpenAIModel(BaseLLM):
             response = self.client.chat.completions.create(
                 model=self.model_name,
                 messages=[{"role": "user", "content": prompt}],
+                temperature=self.temperature,
+                top_p=self.top_p,
                 timeout=timeout
             )
             return response
