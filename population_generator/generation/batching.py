@@ -70,14 +70,18 @@ class BatchProcessor:
             # Enable token tracking on the model if we have a token analyzer
             if self.token_analyzer:
                 model.enable_token_tracking(True)
-            
+
+            # Snapshot history length before the batch so we can capture ALL
+            # LLM calls made during this batch, including retry attempts.
+            token_history_start = len(model.token_usage_history)
+
             results = []
-            
+
             # Process each prompt individually to show progress
             for i, prompt in enumerate(prompts):
                 household_num = households_generated + i + 1
                 print(f"  Generating household {household_num}/{total_households}...", end=" ", flush=True)
-                
+
                 try:
                     result = model.generate_json(prompt, schema, custom_validator, timeout=timeout)
                     results.append(result)
@@ -85,10 +89,10 @@ class BatchProcessor:
                 except Exception as e:
                     print(f"✗ (Failed: {str(e)})")
                     results.append({})  # Return empty dict on failure
-            
-            # Record token usage if tracking is enabled
-            if self.token_analyzer and model.track_tokens and model.token_usage_history:
-                self._record_token_usage(model, len(prompts))
+
+            # Record ALL token usage entries added during this batch (including retries).
+            if self.token_analyzer and model.track_tokens:
+                self._record_token_usage(model, token_history_start)
             
             return results
         except Exception as e:
@@ -142,20 +146,23 @@ class BatchProcessor:
             logging.error(f"  Stack trace: {traceback.format_exc()}")
             raise  # Re-raise the error
     
-    def _record_token_usage(self, model: BaseLLM, batch_size: int):
-        """Record token usage for the batch.
-        
+    def _record_token_usage(self, model: BaseLLM, history_start: int):
+        """Record token usage for ALL LLM calls made since history_start.
+
+        Using a start index rather than a trailing slice ensures that retry
+        attempts are included, not just one entry per prompt.
+
         Args:
             model: LLM model instance
-            batch_size: Size of the processed batch
+            history_start: Index into model.token_usage_history at the start of
+                           the batch; all entries from this index onward are recorded.
         """
-        # Get the most recent token usage entries for this batch
-        recent_usage = model.token_usage_history[-batch_size:]
-        for usage in recent_usage:
+        new_usage = model.token_usage_history[history_start:]
+        for usage in new_usage:
             self.token_analyzer.record_usage(
                 input_tokens=usage.input_tokens,
                 output_tokens=usage.output_tokens,
                 prompt_type="batch_generation",
-                batch_size=batch_size,
+                batch_size=len(new_usage),
                 metadata={"model": model.model_name}
             )

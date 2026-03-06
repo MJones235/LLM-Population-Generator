@@ -23,7 +23,6 @@ class OllamaModel(BaseLLM):
         model_name: str = "llama3.2:3b",
         temperature: float = 0.7,
         top_p: float = 0.85,
-        top_k: int = 40,
         **kwargs,
     ):
         """Initialize Ollama model using LangChain.
@@ -32,7 +31,6 @@ class OllamaModel(BaseLLM):
             model_name: Name of the Ollama model (e.g., 'llama3.2:3b')
             temperature: Controls randomness in generation (0.0-1.0)
             top_p: Nucleus sampling parameter (0.0-1.0)
-            top_k: Top-k sampling parameter
             **kwargs: Additional parameters for OllamaLLM
         """
         super().__init__()
@@ -46,7 +44,6 @@ class OllamaModel(BaseLLM):
         self.model_name = model_name
         self.temperature = temperature
         self.top_p = top_p
-        self.top_k = top_k
         self._extra_kwargs = kwargs
 
         # Ensure model is available
@@ -57,7 +54,6 @@ class OllamaModel(BaseLLM):
             model=model_name,
             temperature=temperature,
             top_p=top_p,
-            top_k=top_k,
             **kwargs,
         )
 
@@ -113,32 +109,83 @@ class OllamaModel(BaseLLM):
             "model": self.model_name,
             "temperature": self.temperature,
             "top_p": self.top_p,
-            "top_k": self.top_k,
         }
 
     def generate_text_with_metadata(
         self, prompt: Union[str, List[str]], timeout: int = 30
     ) -> LLMResponse:
-        """Generate text with metadata (estimated token usage)."""
-        # Use the main generate_text method which handles timeout properly
-        response = self.generate_text(prompt, timeout)
+        """Generate text with metadata (actual token usage from Ollama API).
 
-        # Estimate token usage based on character count
-        if isinstance(prompt, list):
-            total_estimated_input = sum(len(p) // 4 for p in prompt)
-            total_estimated_output = (
-                sum(len(r) // 4 for r in response) if isinstance(response, list) else 0
+        Uses llm.generate() rather than llm.invoke() so that Ollama's
+        prompt_eval_count / eval_count fields are captured via LangChain's
+        generation_info dict.  Raises RuntimeError if either count is absent
+        — no estimation fallback is used, as counts must be exact.
+        """
+
+        def call_llm(queue):
+            """Execute LLM request in separate process for timeout control."""
+            try:
+                prompts = [prompt] if isinstance(prompt, str) else prompt
+                result = self.llm.generate(prompts)
+                queue.put(result)
+            except Exception as e:
+                queue.put(e)
+
+        queue = multiprocessing.Queue()
+        process = multiprocessing.Process(target=call_llm, args=(queue,))
+        process.start()
+        process.join(timeout)
+
+        if process.is_alive():
+            print(
+                f"[TIMEOUT] LLM call timed out after {timeout} seconds. Terminating..."
             )
+            process.terminate()
+            process.join()
+            raise TimeoutError(f"LLM call timed out after {timeout} seconds.")
+
+        if queue.empty():
+            raise TimeoutError("LLM call did not return a response.")
+
+        result = queue.get()
+        if isinstance(result, Exception):
+            raise result
+
+        # Extract text(s) and real token counts from LangChain LLMResult.
+        # prompt_eval_count and eval_count are the authoritative values returned
+        # by the Ollama API.  If either is absent, raise immediately — we must
+        # not silently report inaccurate estimates in place of real counts.
+        generations = result.generations  # list of list of Generation
+        if isinstance(prompt, str):
+            response = generations[0][0].text
+            gen_info = generations[0][0].generation_info or {}
+            input_tokens = gen_info.get("prompt_eval_count")
+            output_tokens = gen_info.get("eval_count")
+            if input_tokens is None or output_tokens is None:
+                raise RuntimeError(
+                    f"Ollama did not return token counts for model '{self.model_name}'. "
+                    f"generation_info={gen_info!r}"
+                )
         else:
-            total_estimated_input = len(prompt) // 4
-            total_estimated_output = (
-                len(response) // 4 if isinstance(response, str) else 0
-            )
+            response = [gen[0].text for gen in generations]
+            input_tokens = 0
+            output_tokens = 0
+            for i, gen in enumerate(generations):
+                gen_info = gen[0].generation_info or {}
+                pt = gen_info.get("prompt_eval_count")
+                ot = gen_info.get("eval_count")
+                if pt is None or ot is None:
+                    raise RuntimeError(
+                        f"Ollama did not return token counts for prompt index {i} "
+                        f"(model '{self.model_name}'). generation_info={gen_info!r}"
+                    )
+                input_tokens += pt
+                output_tokens += ot
 
         token_usage = TokenUsage(
-            input_tokens=total_estimated_input,
-            output_tokens=total_estimated_output,
-            total_tokens=total_estimated_input + total_estimated_output,
+            input_tokens=input_tokens,
+            output_tokens=output_tokens,
+            total_tokens=input_tokens + output_tokens,
         )
 
         model_info = self.get_model_metadata()

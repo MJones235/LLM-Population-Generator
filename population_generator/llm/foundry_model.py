@@ -3,7 +3,7 @@
 import re
 from typing import Dict, Any, List, Union
 from azure.ai.inference import ChatCompletionsClient
-from azure.ai.inference.models import SystemMessage, UserMessage
+from azure.ai.inference.models import UserMessage
 from azure.core.credentials import AzureKeyCredential
 from .base import BaseLLM, LLMResponse, TokenUsage
 
@@ -106,7 +106,6 @@ class FoundryModel(BaseLLM):
             response = self.client.complete(
                 model=self.model_name,
                 messages=[
-                    SystemMessage("You are an expert demographic modeller generating realistic synthetic households for population simulation. Your goal is to produce one new household at a time, ensuring that the characteristics of each household and its members are plausible and reflect the statistical context provided."),
                     UserMessage(prompt)
                 ],
                 temperature=self.temperature,
@@ -124,7 +123,6 @@ class FoundryModel(BaseLLM):
             response = self.client.complete(
                 model=self.model_name,
                 messages=[
-                    SystemMessage("You are an expert demographic modeller generating realistic synthetic households for population simulation. Your goal is to produce one new household at a time, ensuring that the characteristics of each household and its members are plausible and reflect the statistical context provided."),
                     UserMessage(prompt)
                 ],
                 temperature=self.temperature,

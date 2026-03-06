@@ -68,9 +68,6 @@ class PopulationGenerator:
         self.cost_tracker.enable_cost_tracking(model_name, pricing)
         # Update batch processor with the enabled token analyzer
         self.batch_processor.token_analyzer = self.cost_tracker.token_analyzer
-        
-        # Update batch processor to use the token analyzer
-        self.batch_processor.token_analyzer = self.cost_tracker.token_analyzer
     
     def get_cost_summary(self) -> Dict[str, Any]:
         """Get cost analysis summary."""
