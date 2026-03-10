@@ -29,7 +29,8 @@ class Config:
             "generation": {
                 "default_batch_size": 10,
                 "default_timeout": 60,
-                "max_retries": 3
+                "max_retries": 3,
+                "multi_household_prompt": False
             },
             "llm": {
                 "default_temperature": 0.7,

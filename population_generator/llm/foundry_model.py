@@ -18,7 +18,8 @@ class FoundryModel(BaseLLM):
                  api_version: str = "2024-05-01-preview",
                  temperature: float = 0.7, 
                  top_p: float = 0.85, 
-                 top_k: int = 40, 
+                 top_k: int = 40,
+                 read_timeout: int = 300,
                  **kwargs):
         """Initialize Azure AI Foundry model.
         
@@ -30,6 +31,9 @@ class FoundryModel(BaseLLM):
             temperature: Sampling temperature
             top_p: Top-p sampling parameter
             top_k: Top-k sampling parameter
+            read_timeout: HTTP read timeout in seconds (default 300).
+                Reasoning models (e.g. Phi-4-reasoning) generate long
+                thinking traces and may need a higher value (e.g. 600+).
             **kwargs: Additional keyword arguments
         """
         super().__init__()
@@ -38,13 +42,15 @@ class FoundryModel(BaseLLM):
         self.client = ChatCompletionsClient(
             endpoint=endpoint,
             credential=AzureKeyCredential(api_key),
-            api_version=api_version
+            api_version=api_version,
+            read_timeout=read_timeout,
         )
         self.endpoint = endpoint
         self.api_version = api_version
         self.temperature = temperature
         self.top_p = top_p
         self.top_k = top_k
+        self.read_timeout = read_timeout
         self.kwargs = kwargs
 
     def generate_text(self, prompt: Union[str, List[str]], timeout: int = 30) -> Union[str, List[str]]:
@@ -154,4 +160,5 @@ class FoundryModel(BaseLLM):
             "model": self.model_name,
             "endpoint": self.endpoint,
             "api_version": self.api_version,
+            "read_timeout": self.read_timeout,
         }

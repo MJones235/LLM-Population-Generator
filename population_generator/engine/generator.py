@@ -86,6 +86,7 @@ class PopulationGenerator:
         location: str,
         custom_validator: Optional[CustomValidator] = None,
         batch_size: Optional[int] = None,
+        multi_household_prompt: bool = False,
         n_run: int = 1,
         enable_progressive_saving: bool = False,
         output_dir: Optional[Union[str, Path]] = None,
@@ -94,15 +95,30 @@ class PopulationGenerator:
         resume_from_checkpoint: bool = False,
     ) -> List[Dict[str, Any]]:
         """Generate synthetic households using LLM with automatic statistics feedback.
-        
+
+        The ``batch_size`` parameter has two interpretations depending on
+        ``multi_household_prompt``:
+
+        * ``multi_household_prompt=False`` (default): ``batch_size`` is the number
+          of households generated (one per LLM call) before statistics are
+          recalculated and the prompt is updated. This is the original behaviour.
+        * ``multi_household_prompt=True``: ``batch_size`` is the number of
+          households requested *in a single LLM call*. The LLM is instructed to
+          return a JSON array of that many households. Statistics are recalculated
+          after every call (i.e. every batch of ``batch_size`` households).
+
         Args:
             n_households: Number of households to generate
             model: LLM instance to use for generation
             base_prompt: Base prompt template (can contain statistics placeholders)
-            schema: JSON schema for validation
+            schema: JSON schema for a *single* household (automatically wrapped in
+                an array schema when multi_household_prompt=True)
             location: Location name for context
             custom_validator: Optional custom validator for additional rule checking
-            batch_size: Number of households per batch
+            batch_size: Number of households per batch (see above for dual meaning)
+            multi_household_prompt: When True, each LLM call generates batch_size
+                households at once. When False (default), each LLM call generates
+                one household and statistics are recalculated every batch_size calls.
             n_run: Run number for tracking
             enable_progressive_saving: Enable saving after each batch to prevent data loss
             output_dir: Output directory for final results (when provided, checkpoints default to output_dir/checkpoints)
@@ -176,13 +192,16 @@ class PopulationGenerator:
             print(f"\n--- Batch {batch_info['batch_num']}/{batch_info['total_batches']} ({batch_info['batch_count']} households), Run {n_run} ---")
 
             # Prepare and run batch
-            batch_prompts = self.batch_processor.prepare_batch_prompts(prompt, batch_info['batch_count'])
+            batch_prompts = self.batch_processor.prepare_batch_prompts(
+                prompt, batch_info['batch_count'], multi_household_prompt)
             print(f"Prompt: {batch_prompts[0]}...")
 
             batch_results = self.batch_processor.run_batch(
-                model, batch_prompts, schema, custom_validator, 
-                households_generated=len(households), 
-                total_households=n_households
+                model, batch_prompts, schema, custom_validator,
+                households_generated=len(households),
+                total_households=n_households,
+                multi_household_prompt=multi_household_prompt,
+                batch_count=batch_info['batch_count']
             )
             households.extend(batch_results)
             
